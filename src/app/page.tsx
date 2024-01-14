@@ -1,12 +1,3 @@
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-
 export default function Home() {
-	return (
-		<main className="flex min-h-screen flex-col items-center justify-between p-24">
-			<Link href="/add-internship">
-				<Button>Ajouter un stage</Button>
-			</Link>
-		</main>
-	);
+	return <main>Hello world</main>;
 }
