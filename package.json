@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^3.3.4",
     "chakra-react-select": "^4.7.6",
     "framer-motion": "^10.18.0",
+    "lucide-react": "^0.311.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",

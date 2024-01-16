@@ -16,6 +16,9 @@ import { formSchema } from './form-schema';
 interface AddressOption {
 	value: string;
 	label: string;
+	// Additional data
+	postcode: string;
+	city: string;
 }
 
 export function CompanyFields() {
@@ -23,19 +26,24 @@ export function CompanyFields() {
 		register,
 		formState: { errors },
 		control,
+		setValue: setFormValue,
 	} = useFormContext<z.infer<typeof formSchema>>();
 
 	// 1. Call API
 	const handleAddressSearch = useDebouncedCallback(
 		(value: string, onSuccess: (data: AddressOption[]) => void) => {
-			getAddress(value).then((res: any) => {
+			getAddress(value).then((res) => {
 				const addresses = res.features.map((address: any) => ({
 					label: address.properties.label,
 					value: address.properties.label,
+					postcode: address.properties.postcode,
+					city: address.properties.city,
 				}));
 
 				if (addresses.length > 0) {
 					onSuccess(addresses);
+				} else {
+					onSuccess([]);
 				}
 			});
 		},
@@ -64,17 +72,17 @@ export function CompanyFields() {
 				</FormErrorMessage>
 			</FormControl>
 
-			<FormControl isInvalid={Boolean(errors.companyAddress)}>
-				<FormLabel htmlFor="companyAddress">Address *</FormLabel>
+			<FormControl isInvalid={Boolean(errors.address)}>
+				<FormLabel htmlFor="address">Address *</FormLabel>
 				<Controller
-					name="companyAddress"
+					name="address"
 					control={control}
 					render={({ field }) => {
 						return (
 							<AsyncSelect
-								inputId="companyAddress"
+								inputId="address"
 								placeholder="Search an address..."
-								instanceId={'react-select-companyAddress'}
+								instanceId={'react-select-address'}
 								closeMenuOnSelect={false}
 								loadOptions={loadOptions}
 								//  the menu will close when there are no more options to select from.
@@ -96,6 +104,8 @@ export function CompanyFields() {
 								// Pass the 'value' of the options object {label, value} to React hook form value.
 								onChange={(val) => {
 									field.onChange(val?.value);
+									setFormValue('postcode', val?.postcode || '');
+									setFormValue('city', val?.city || '');
 								}}
 								chakraStyles={{
 									inputContainer: (provided) => ({
@@ -111,7 +121,7 @@ export function CompanyFields() {
 					}}
 				/>
 				<FormErrorMessage>
-					{errors.companyAddress && errors.companyAddress.message}
+					{errors.address && errors.address.message}
 				</FormErrorMessage>
 			</FormControl>
 
@@ -124,11 +134,11 @@ export function CompanyFields() {
 					</FormErrorMessage>
 				</FormControl>
 
-				<FormControl isInvalid={Boolean(errors.postalCode)}>
-					<FormLabel htmlFor="postalCode">Postal Code *</FormLabel>
-					<Input id="postalCode" {...register('postalCode')} />
+				<FormControl isInvalid={Boolean(errors.postcode)}>
+					<FormLabel htmlFor="postcode">Postal Code *</FormLabel>
+					<Input id="postcode" {...register('postcode')} />
 					<FormErrorMessage>
-						{errors.postalCode && errors.postalCode.message}
+						{errors.postcode && errors.postcode.message}
 					</FormErrorMessage>
 				</FormControl>
 			</Flex>
