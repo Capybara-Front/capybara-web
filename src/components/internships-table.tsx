@@ -7,7 +7,7 @@ const InternshipsTable = ({}) => {
       <Table size='md'>
         <Thead>
           <Tr>
-            <Th  style={{ textAlign: "center" }}>Student ID</Th>
+            <Th  style={{ textAlign: "center" }}>Internship ID</Th>
             <Th  style={{ textAlign: "center" }}>Starting Date</Th>
             <Th  style={{ textAlign: "center" }}>End Date</Th>
             <Th  style={{ textAlign: "center" }}>Duration</Th>
