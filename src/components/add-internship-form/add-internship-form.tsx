@@ -1,12 +1,14 @@
 'use client';
 import { AddressUtil, Suggestion } from '@/utils/address';
-import { Box, Button, Flex, Heading } from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, GridItem, Heading } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { CompanyFields } from './company-fields';
 import { formSchema } from './form-schema';
+import { HostFields } from './host-fields';
+import { InternshipFields } from './internship-fields';
 import { VerifyAddress } from './verify-address';
 
 export function AddInternShipForm() {
@@ -48,19 +50,37 @@ export function AddInternShipForm() {
 	return (
 		<>
 			<Heading mb={7}>Add internship</Heading>
-			<Box>
-				<Heading mb={4} as="h3" size="md">
-					1. Company information
-				</Heading>
-				<FormProvider {...form}>
-					<Flex
-						direction="column"
-						gap={2}
-						as="form"
-						onSubmit={handleSubmit(onSubmit)}
-					>
-						<CompanyFields />
+			<FormProvider {...form}>
+				<Flex
+					direction="column"
+					gap={12}
+					as="form"
+					onSubmit={handleSubmit(onSubmit)}
+				>
+					<Grid templateColumns="repeat(2,1fr)" gap={12}>
+						<GridItem>
+							<Heading mb={4} as="h3" size="md">
+								1. Company
+							</Heading>
+							<CompanyFields />
+						</GridItem>
 
+						<GridItem>
+							<Heading mb={4} as="h3" size="md">
+								2. Company tutor
+							</Heading>
+							<HostFields />
+						</GridItem>
+					</Grid>
+
+					<Box>
+						<Heading mb={4} as="h3" size="md">
+							3. Internship
+						</Heading>
+						<InternshipFields />
+					</Box>
+
+					<Box>
 						{showVerifyAddress && (
 							<VerifyAddress
 								entered={form.getValues('address')}
@@ -84,9 +104,9 @@ export function AddInternShipForm() {
 								Submit
 							</Button>
 						)}
-					</Flex>
-				</FormProvider>
-			</Box>
+					</Box>
+				</Flex>
+			</FormProvider>
 		</>
 	);
 }

@@ -1,10 +1,11 @@
 'use client';
 import { getAddress } from '@/api/get-address';
 import {
-	Flex,
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
+	Grid,
+	GridItem,
 	Input,
 } from '@chakra-ui/react';
 import { AsyncSelect } from 'chakra-react-select';
@@ -63,85 +64,91 @@ export function CompanyFields() {
 		}
 	};
 	return (
-		<>
-			<FormControl isInvalid={Boolean(errors.company)}>
-				<FormLabel htmlFor="company">Company *</FormLabel>
-				<Input id="company" {...register('company')} />
-				<FormErrorMessage>
-					{errors.company && errors.company.message}
-				</FormErrorMessage>
-			</FormControl>
+		<Grid templateColumns="repeat(2, 1fr)" gap={4}>
+			<GridItem colSpan={2}>
+				<FormControl isRequired isInvalid={Boolean(errors.company)}>
+					<FormLabel htmlFor="company">Company</FormLabel>
+					<Input id="company" {...register('company')} />
+					<FormErrorMessage>
+						{errors.company && errors.company.message}
+					</FormErrorMessage>
+				</FormControl>
+			</GridItem>
 
-			<FormControl isInvalid={Boolean(errors.address)}>
-				<FormLabel htmlFor="address">Address *</FormLabel>
-				<Controller
-					name="address"
-					control={control}
-					render={({ field }) => {
-						return (
-							<AsyncSelect
-								inputId="address"
-								placeholder="Search an address..."
-								instanceId={'react-select-address'}
-								closeMenuOnSelect={false}
-								loadOptions={loadOptions}
-								//  the menu will close when there are no more options to select from.
-								noOptionsMessage={() => null}
-								components={{
-									DropdownIndicator: null,
-									// Do NOT show the selected option value.
-									SingleValue: () => null,
-								}}
-								inputValue={field.value}
-								onInputChange={(value, action) => {
-									// only set the input when the action that caused the
-									// change equals to "input-change" and ignore the other
-									// ones like: "set-value", "input-blur", and "menu-close"
-									// That behavior doesn't clear input on select
-									// See: https://stackoverflow.com/a/66992102
-									if (action.action === 'input-change') field.onChange(value);
-								}}
-								// Pass the 'value' of the options object {label, value} to React hook form value.
-								onChange={(val) => {
-									field.onChange(val?.value);
-									setFormValue('postcode', val?.postcode || '');
-									setFormValue('city', val?.city || '');
-								}}
-								chakraStyles={{
-									inputContainer: (provided) => ({
-										...provided,
-										display: 'block',
-										':after': {
-											display: 'none',
-										},
-									}),
-								}}
-							/>
-						);
-					}}
-				/>
-				<FormErrorMessage>
-					{errors.address && errors.address.message}
-				</FormErrorMessage>
-			</FormControl>
+			<GridItem colSpan={2}>
+				<FormControl isInvalid={Boolean(errors.address)}>
+					<FormLabel htmlFor="address">Address *</FormLabel>
+					<Controller
+						name="address"
+						control={control}
+						render={({ field }) => {
+							return (
+								<AsyncSelect
+									inputId="address"
+									placeholder="Search an address..."
+									instanceId={'react-select-address'}
+									closeMenuOnSelect={false}
+									loadOptions={loadOptions}
+									//  the menu will close when there are no more options to select from.
+									noOptionsMessage={() => null}
+									components={{
+										DropdownIndicator: null,
+										// Do NOT show the selected option value.
+										SingleValue: () => null,
+									}}
+									inputValue={field.value}
+									onInputChange={(value, action) => {
+										// only set the input when the action that caused the
+										// change equals to "input-change" and ignore the other
+										// ones like: "set-value", "input-blur", and "menu-close"
+										// That behavior doesn't clear input on select
+										// See: https://stackoverflow.com/a/66992102
+										if (action.action === 'input-change') field.onChange(value);
+									}}
+									// Pass the 'value' of the options object {label, value} to React hook form value.
+									onChange={(val) => {
+										field.onChange(val?.value);
+										setFormValue('postcode', val?.postcode || '');
+										setFormValue('city', val?.city || '');
+									}}
+									chakraStyles={{
+										inputContainer: (provided) => ({
+											...provided,
+											display: 'block',
+											':after': {
+												display: 'none',
+											},
+										}),
+									}}
+								/>
+							);
+						}}
+					/>
+					<FormErrorMessage>
+						{errors.address && errors.address.message}
+					</FormErrorMessage>
+				</FormControl>
+			</GridItem>
 
-			<Flex gap={4}>
-				<FormControl isInvalid={Boolean(errors.city)}>
-					<FormLabel htmlFor="city">City *</FormLabel>
+			<GridItem>
+				<FormControl isRequired isInvalid={Boolean(errors.city)}>
+					<FormLabel htmlFor="city">City</FormLabel>
 					<Input id="city" {...register('city')} />
 					<FormErrorMessage>
 						{errors.city && errors.city.message}
 					</FormErrorMessage>
 				</FormControl>
+			</GridItem>
 
-				<FormControl isInvalid={Boolean(errors.postcode)}>
-					<FormLabel htmlFor="postcode">Postal Code *</FormLabel>
+			<GridItem>
+				<FormControl isRequired isInvalid={Boolean(errors.postcode)}>
+					<FormLabel htmlFor="postcode">Zip code</FormLabel>
 					<Input id="postcode" {...register('postcode')} />
 					<FormErrorMessage>
 						{errors.postcode && errors.postcode.message}
 					</FormErrorMessage>
 				</FormControl>
-			</Flex>
-		</>
+			</GridItem>
+		</Grid>
 	);
 }
