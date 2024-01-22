@@ -21,6 +21,7 @@ import { formSchema } from './form-schema';
 import { HostFields } from './host-fields';
 import { InternshipFields } from './internship-fields';
 import { VerifyAddress } from './verify-address';
+import { VerifyAddressError } from './verify-address-error';
 
 export function AddInternShipForm() {
 	const router = useRouter();
@@ -33,10 +34,11 @@ export function AddInternShipForm() {
 		setValue: formSetValue,
 		getValues: formGetValues,
 	} = form;
-	const [showVerifyAddress, setShowVerifyAddress] = useState(false);
+
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
-	const [isAddressAlreadyConfirmed, setIsAddressAlreadyConfirmed] =
-		useState(false);
+	const [showVerifyAddress, setShowVerifyAddress] = useState(false);
+	const [showAddressError, setShowAddressError] = useState(false);
+	const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
 	const [confirmedAddress, setConfirmedAddress] = useState('');
 
 	const mutation = useMutation({
@@ -44,57 +46,93 @@ export function AddInternShipForm() {
 	});
 
 	function onSubmit(formValues: z.infer<typeof formSchema>) {
-		if (!isAddressAlreadyConfirmed) {
+		if (confirmedAddress === formValues.company.address) {
+			const { dates } = formValues;
+			mutation.mutate(
+				{
+					...formValues,
+					startDate: dates.startDate,
+					endDate: dates.endDate,
+					companyId: 'Dassault Systèmes',
+					studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
+					academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
+					companyTutorId: '42ab37be-af42-44da-9dd6-1c09aa6c473a',
+					// companyTutor: {
+					// 	firstName: formValues.companyTutor.firstName,
+					// 	lastName: formValues.companyTutor.lastName,
+					// 	mailAddress: formValues.companyTutor.email,
+					// 	phoneNumber: formValues.companyTutor.firstName,
+					// },
+					company: undefined,
+					companyTutor: undefined,
+				},
+				{
+					onSuccess: () => {
+						toast({
+							title: `Internship '${formValues.title}' created.`,
+							status: 'success',
+							duration: 9000,
+							isClosable: true,
+						});
+						router.push('/');
+					},
+				}
+			);
+		} else {
 			AddressUtil.getSuggestions(formValues.company.address)
 				// Suggestions
 				.then((suggestions) => {
-					setSuggestions(suggestions);
-					setShowVerifyAddress(true);
+					// 1. Address is valid
+					if (suggestions[0].label === formValues.company.address) {
+						setShowVerifyAddress(false);
+						setShowAddressError(false);
+
+						const { dates } = formValues;
+						mutation.mutate(
+							{
+								...formValues,
+								startDate: dates.startDate,
+								endDate: dates.endDate,
+								companyId: 'Dassault Systèmes',
+								studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
+								academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
+								companyTutorId: '42ab37be-af42-44da-9dd6-1c09aa6c473a',
+								// companyTutor: {
+								// 	firstName: formValues.companyTutor.firstName,
+								// 	lastName: formValues.companyTutor.lastName,
+								// 	mailAddress: formValues.companyTutor.email,
+								// 	phoneNumber: formValues.companyTutor.firstName,
+								// },
+								company: undefined,
+								companyTutor: undefined,
+							},
+							{
+								onSuccess: () => {
+									toast({
+										title: `Internship '${formValues.title}' created.`,
+										status: 'success',
+										duration: 9000,
+										isClosable: true,
+									});
+									router.push('/');
+								},
+							}
+						);
+						// 2. Has suggestions
+					} else {
+						setSuggestions(suggestions);
+						setShowAddressError(false);
+						setShowVerifyAddress(true);
+					}
 				})
 				// No suggestions
 				.catch(() => {
 					setShowVerifyAddress(false);
-					setIsAddressAlreadyConfirmed(true);
+					setShowAddressError(true);
 				});
-		} else {
-			// If we confirmed but we entered a new address.
-			if (formGetValues('company.address') !== confirmedAddress) {
-				if (suggestions.length > 0) setShowVerifyAddress(true);
-			}
 		}
-		// Extract 'dates' because 'requestModel' doesn't contain that field.
-		const { dates } = formValues;
-		mutation.mutate(
-			{
-				...formValues,
-				startDate: dates.startDate,
-				endDate: dates.endDate,
-				companyId: 'Dassault Systèmes',
-				studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
-				academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
-				companyTutorId: '42ab37be-af42-44da-9dd6-1c09aa6c473a',
-				// companyTutor: {
-				// 	firstName: formValues.companyTutor.firstName,
-				// 	lastName: formValues.companyTutor.lastName,
-				// 	mailAddress: formValues.companyTutor.email,
-				// 	phoneNumber: formValues.companyTutor.firstName,
-				// },
-				company: undefined,
-				companyTutor: undefined,
-			},
-			{
-				onSuccess: () => {
-					toast({
-						title: `Internship '${formValues.title}' created.`,
-						status: 'success',
-						duration: 9000,
-						isClosable: true,
-					});
-					router.push('/');
-				},
-			}
-		);
 	}
+	console.log(confirmedAddress);
 
 	return (
 		<>
@@ -143,19 +181,32 @@ export function AddInternShipForm() {
 										);
 										formSetValue('company.city', selectedSuggestion.city);
 										setConfirmedAddress(selectedSuggestion.label);
-									} else {
-										setConfirmedAddress(formGetValues('company.address'));
 									}
+									// We selected the entered address
 									setShowVerifyAddress(false);
-									setIsAddressAlreadyConfirmed(true);
+									setIsAddressConfirmed(true);
+									setConfirmedAddress(form.getValues('company.address'));
 								}}
 							/>
 						)}
-						{!showVerifyAddress && (
-							<Button type="submit" mt={5} isLoading={mutation.isPending}>
-								Submit
-							</Button>
+						{showAddressError && (
+							<VerifyAddressError
+								onSave={() => {
+									setShowAddressError(false);
+									setIsAddressConfirmed(true);
+									setConfirmedAddress(form.getValues('company.address'));
+								}}
+							/>
 						)}
+
+						<Button
+							type="submit"
+							mt={5}
+							isLoading={mutation.isPending}
+							isDisabled={showVerifyAddress}
+						>
+							Submit
+						</Button>
 					</Box>
 				</Flex>
 			</FormProvider>

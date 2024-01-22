@@ -19,11 +19,6 @@ export class AddressUtil {
 					new Error(`The address you provided may be incorrect: ${address}`)
 				);
 
-			if (res.features[0].properties.label === address)
-				return Promise.reject(
-					new Error(`The first autocompletion is the same address: ${address}`)
-				);
-
 			return res.features.map(({ properties }) => ({
 				label: properties.label,
 				housenumber: properties.housenumber,
