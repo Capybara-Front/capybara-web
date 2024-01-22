@@ -1,5 +1,6 @@
 'use client';
 import { getAddress } from '@/api/get-address';
+import type { Feature } from '@/lib/address-api.type';
 import {
 	FormControl,
 	FormErrorMessage,
@@ -34,10 +35,10 @@ export function CompanyFields() {
 	const handleAddressSearch = useDebouncedCallback(
 		(value: string, onSuccess: (data: AddressOption[]) => void) => {
 			getAddress(value).then((res) => {
-				const addresses = res.features.map((address: any) => ({
+				const addresses = res.features.map((address: Feature) => ({
 					label: address.properties.label,
 					value: address.properties.label,
-					zipCode: address.properties.zipCode,
+					zipCode: address.properties.postcode,
 					city: address.properties.city,
 				}));
 

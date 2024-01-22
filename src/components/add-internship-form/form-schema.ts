@@ -19,7 +19,7 @@ export const formSchema = z.object({
 		city: z.string().min(2).max(128),
 		zipCode: z
 			.string()
-			.refine((val) => val.length >= 5, 'The zip code is invalid.')
+			.refine((val) => val.length >= 5, 'The zip code must be 5 characters.')
 			.refine((val) => /^\d+$/.test(val), 'The zip code is invalid.'),
 	}),
 	// academicTutor: z.object({

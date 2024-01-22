@@ -28,7 +28,7 @@ interface Properties {
 	street: string;
 }
 
-interface Feature {
+export interface Feature {
 	type: string;
 	geometry: Geometry;
 	properties: Properties;
