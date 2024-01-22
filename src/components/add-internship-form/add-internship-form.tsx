@@ -38,7 +38,6 @@ export function AddInternShipForm() {
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [showVerifyAddress, setShowVerifyAddress] = useState(false);
 	const [showAddressError, setShowAddressError] = useState(false);
-	const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
 	const [confirmedAddress, setConfirmedAddress] = useState('');
 
 	const mutation = useMutation({
@@ -184,7 +183,6 @@ export function AddInternShipForm() {
 									}
 									// We selected the entered address
 									setShowVerifyAddress(false);
-									setIsAddressConfirmed(true);
 									setConfirmedAddress(form.getValues('company.address'));
 								}}
 							/>
@@ -193,7 +191,6 @@ export function AddInternShipForm() {
 							<VerifyAddressError
 								onSave={() => {
 									setShowAddressError(false);
-									setIsAddressConfirmed(true);
 									setConfirmedAddress(form.getValues('company.address'));
 								}}
 							/>
