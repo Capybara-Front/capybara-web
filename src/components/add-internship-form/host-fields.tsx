@@ -21,41 +21,53 @@ export function HostFields() {
 	return (
 		<Grid templateColumns="repeat(2, 1fr)" gap={4}>
 			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.firstname)}>
-					<FormLabel htmlFor="firstname">Firstname</FormLabel>
-					<Input id="firstname" {...register('firstname')} />
+				<FormControl
+					isRequired
+					isInvalid={Boolean(errors.companyTutor?.firstName)}
+				>
+					<FormLabel htmlFor="firstName">First Name</FormLabel>
+					<Input id="firstName" {...register('companyTutor.firstName')} />
 					<FormErrorMessage>
-						{errors.firstname && errors.firstname.message}
+						{errors.companyTutor?.firstName &&
+							errors.companyTutor?.firstName.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
 
 			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.lastname)}>
-					<FormLabel htmlFor="lastname">Lastname</FormLabel>
-					<Input id="lastname" {...register('lastname')} />
+				<FormControl
+					isRequired
+					isInvalid={Boolean(errors.companyTutor?.lastName)}
+				>
+					<FormLabel htmlFor="lastName">Last Name</FormLabel>
+					<Input id="lastName" {...register('companyTutor.lastName')} />
 					<FormErrorMessage>
-						{errors.lastname && errors.lastname.message}
+						{errors.companyTutor?.lastName &&
+							errors.companyTutor?.lastName.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
 
 			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.phoneNumber)}>
+				<FormControl
+					isRequired
+					isInvalid={Boolean(errors.companyTutor?.phoneNumber)}
+				>
 					<FormLabel htmlFor="phoneNumber">Phone number</FormLabel>
-					<Input id="phoneNumber" {...register('phoneNumber')} />
+					<Input id="phoneNumber" {...register('companyTutor.phoneNumber')} />
 					<FormErrorMessage>
-						{errors.phoneNumber && errors.phoneNumber.message}
+						{errors.companyTutor?.phoneNumber &&
+							errors.companyTutor?.phoneNumber.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
 
 			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.email)}>
+				<FormControl isRequired isInvalid={Boolean(errors.companyTutor?.email)}>
 					<FormLabel htmlFor="email">Email</FormLabel>
-					<Input id="email" {...register('email')} />
+					<Input id="email" {...register('companyTutor.email')} />
 					<FormErrorMessage>
-						{errors.email && errors.email.message}
+						{errors.companyTutor?.email && errors.companyTutor?.email.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>

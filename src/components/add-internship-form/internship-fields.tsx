@@ -21,47 +21,42 @@ export function InternshipFields() {
 	const {
 		register,
 		formState: { errors },
-		getValues: formGetValues,
 		watch,
 	} = useFormContext<z.infer<typeof formSchema>>();
 
-	const watchStartDate = watch('internship.dates.startDate');
-	const watchEndDate = watch('internship.dates.endDate');
+	const watchStartDate = watch('dates.startDate');
+	const watchEndDate = watch('dates.endDate');
 
 	return (
 		<Grid templateColumns="repeat(2, 1fr)" gap={4}>
 			<GridItem colSpan={2}>
-				<FormControl isRequired isInvalid={Boolean(errors.internship?.title)}>
-					<FormLabel htmlFor="internship.title">Title</FormLabel>
-					<Input id="internship.title" {...register('internship.title')} />
+				<FormControl isRequired isInvalid={Boolean(errors.title)}>
+					<FormLabel htmlFor="title">Title</FormLabel>
+					<Input id="title" {...register('title')} />
 					<FormErrorMessage>
-						{errors.internship?.title && errors.internship?.title.message}
+						{errors.title && errors.title.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
 
 			<GridItem colSpan={2}>
-				<FormControl
-					isRequired
-					isInvalid={Boolean(errors.internship?.missionDescription)}
-				>
-					<FormLabel htmlFor="internship.missionDescription">
+				<FormControl isRequired isInvalid={Boolean(errors.missionDescription)}>
+					<FormLabel htmlFor="missionDescription">
 						Mission description
 					</FormLabel>
 					<Textarea
-						id="internship.missionDescription"
+						id="missionDescription"
 						resize="none"
-						{...register('internship.missionDescription')}
+						{...register('missionDescription')}
 					/>
 					<FormErrorMessage>
-						{errors.internship?.missionDescription &&
-							errors.internship?.missionDescription.message}
+						{errors.missionDescription && errors.missionDescription.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
 
 			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.internship?.salary)}>
+				<FormControl isRequired isInvalid={Boolean(errors.salary)}>
 					<FormLabel htmlFor="salary">Salary</FormLabel>
 
 					<InputGroup>
@@ -76,11 +71,11 @@ export function InternshipFields() {
 							id="salary"
 							type="number"
 							// w={56}
-							{...register('internship.salary')}
+							{...register('salary')}
 						/>
 					</InputGroup>
 					<FormErrorMessage>
-						{errors.internship?.salary && errors.internship?.salary.message}
+						{errors.salary && errors.salary.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
@@ -88,37 +83,23 @@ export function InternshipFields() {
 			<GridItem display="flex" alignItems="end" gap={2}>
 				<FormControl
 					isRequired
-					isInvalid={Boolean(
-						errors.internship?.dates?.startDate || errors.internship?.dates
-					)}
+					isInvalid={Boolean(errors.dates?.startDate || errors.dates)}
 				>
 					<FormLabel htmlFor="startDate">Start date</FormLabel>
-					<Input
-						id="startDate"
-						type="date"
-						{...register('internship.dates.startDate')}
-					/>
+					<Input id="startDate" type="date" {...register('dates.startDate')} />
 					<FormErrorMessage>
-						{errors.internship?.dates?.startDate &&
-							errors.internship?.dates.startDate?.message}
+						{errors.dates?.startDate && errors.dates.startDate?.message}
 					</FormErrorMessage>
 				</FormControl>
 				<Divider borderBottomWidth={2} w={12} mb={5} />
 				<FormControl
 					isRequired
-					isInvalid={Boolean(
-						errors.internship?.dates?.endDate || errors.internship?.dates
-					)}
+					isInvalid={Boolean(errors.dates?.endDate || errors.dates)}
 				>
 					<FormLabel htmlFor="endDate">End date</FormLabel>
-					<Input
-						id="endDate"
-						type="date"
-						{...register('internship.dates.endDate')}
-					/>
+					<Input id="endDate" type="date" {...register('dates.endDate')} />
 					<FormErrorMessage>
-						{errors.internship?.dates?.endDate &&
-							errors.internship?.dates.endDate?.message}
+						{errors.dates?.endDate && errors.dates.endDate?.message}
 					</FormErrorMessage>
 				</FormControl>
 				<Text flexShrink={0} mb={2.5} fontWeight="500">
@@ -132,7 +113,7 @@ export function InternshipFields() {
 
 			<GridItem colSpan={2}>
 				<Text color="red.500" fontSize="sm">
-					{errors.internship?.dates && errors.internship?.dates.root?.message}
+					{errors.dates && errors.dates.root?.message}
 				</Text>
 			</GridItem>
 		</Grid>

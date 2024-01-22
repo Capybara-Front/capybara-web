@@ -18,7 +18,7 @@ interface AddressOption {
 	value: string;
 	label: string;
 	// Additional data
-	postcode: string;
+	zipCode: string;
 	city: string;
 }
 
@@ -37,7 +37,7 @@ export function CompanyFields() {
 				const addresses = res.features.map((address: any) => ({
 					label: address.properties.label,
 					value: address.properties.label,
-					postcode: address.properties.postcode,
+					zipCode: address.properties.zipCode,
 					city: address.properties.city,
 				}));
 
@@ -66,20 +66,20 @@ export function CompanyFields() {
 	return (
 		<Grid templateColumns="repeat(2, 1fr)" gap={4}>
 			<GridItem colSpan={2}>
-				<FormControl isRequired isInvalid={Boolean(errors.company)}>
+				<FormControl isRequired isInvalid={Boolean(errors.company?.name)}>
 					<FormLabel htmlFor="company">Company</FormLabel>
-					<Input id="company" {...register('company')} />
+					<Input id="company" {...register('company.name')} />
 					<FormErrorMessage>
-						{errors.company && errors.company.message}
+						{errors.company?.name && errors.company?.name.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
 
 			<GridItem colSpan={2}>
-				<FormControl isInvalid={Boolean(errors.address)}>
-					<FormLabel htmlFor="address">Address *</FormLabel>
+				<FormControl isInvalid={Boolean(errors.company?.address)}>
+					<FormLabel htmlFor="address">Address</FormLabel>
 					<Controller
-						name="address"
+						name="company.address"
 						control={control}
 						render={({ field }) => {
 							return (
@@ -108,8 +108,8 @@ export function CompanyFields() {
 									// Pass the 'value' of the options object {label, value} to React hook form value.
 									onChange={(val) => {
 										field.onChange(val?.value);
-										setFormValue('postcode', val?.postcode || '');
-										setFormValue('city', val?.city || '');
+										setFormValue('company.zipCode', val?.zipCode || '');
+										setFormValue('company.city', val?.city || '');
 									}}
 									chakraStyles={{
 										inputContainer: (provided) => ({
@@ -125,27 +125,27 @@ export function CompanyFields() {
 						}}
 					/>
 					<FormErrorMessage>
-						{errors.address && errors.address.message}
+						{errors.company?.address && errors.company?.address.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
 
 			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.city)}>
+				<FormControl isRequired isInvalid={Boolean(errors.company?.city)}>
 					<FormLabel htmlFor="city">City</FormLabel>
-					<Input id="city" {...register('city')} />
+					<Input id="city" {...register('company.city')} />
 					<FormErrorMessage>
-						{errors.city && errors.city.message}
+						{errors.company?.city && errors.company?.city.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
 
 			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.postcode)}>
-					<FormLabel htmlFor="postcode">Zip code</FormLabel>
-					<Input id="postcode" {...register('postcode')} />
+				<FormControl isRequired isInvalid={Boolean(errors.company?.zipCode)}>
+					<FormLabel htmlFor="zipCode">Zip code</FormLabel>
+					<Input id="zipCode" {...register('company.zipCode')} />
 					<FormErrorMessage>
-						{errors.postcode && errors.postcode.message}
+						{errors.company?.zipCode && errors.company?.zipCode.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
