@@ -47,36 +47,35 @@ export function AddInternShipForm() {
 	function onSubmit(formValues: z.infer<typeof formSchema>) {
 		if (confirmedAddress === formValues.company.address) {
 			const { dates } = formValues;
-			mutation.mutate(
-				{
-					...formValues,
-					startDate: dates.startDate,
-					endDate: dates.endDate,
-					companyId: 'Dassault Systèmes',
-					studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
-					academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
-					companyTutorId: '42ab37be-af42-44da-9dd6-1c09aa6c473a',
-					// companyTutor: {
-					// 	firstName: formValues.companyTutor.firstName,
-					// 	lastName: formValues.companyTutor.lastName,
-					// 	mailAddress: formValues.companyTutor.email,
-					// 	phoneNumber: formValues.companyTutor.firstName,
-					// },
-					company: undefined,
-					companyTutor: undefined,
+			const variables = {
+				...formValues,
+				dates: undefined,
+				startDate: dates.startDate,
+				endDate: dates.endDate,
+				companyId: 'Dassault Systèmes',
+				studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
+				academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
+				companyTutorId: '42ab37be-af42-44da-9dd6-1c09aa6c473a',
+				// companyTutor: {
+				// 	firstName: formValues.companyTutor.firstName,
+				// 	lastName: formValues.companyTutor.lastName,
+				// 	mailAddress: formValues.companyTutor.email,
+				// 	phoneNumber: formValues.companyTutor.firstName,
+				// },
+				company: undefined,
+				companyTutor: undefined,
+			};
+			mutation.mutate(variables, {
+				onSuccess: () => {
+					toast({
+						title: `Internship '${formValues.title}' created.`,
+						status: 'success',
+						duration: 9000,
+						isClosable: true,
+					});
+					router.push('/');
 				},
-				{
-					onSuccess: () => {
-						toast({
-							title: `Internship '${formValues.title}' created.`,
-							status: 'success',
-							duration: 9000,
-							isClosable: true,
-						});
-						router.push('/');
-					},
-				}
-			);
+			});
 		} else {
 			AddressUtil.getSuggestions(formValues.company.address)
 				// Suggestions
@@ -87,36 +86,35 @@ export function AddInternShipForm() {
 						setShowAddressError(false);
 
 						const { dates } = formValues;
-						mutation.mutate(
-							{
-								...formValues,
-								startDate: dates.startDate,
-								endDate: dates.endDate,
-								companyId: 'Dassault Systèmes',
-								studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
-								academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
-								companyTutorId: '42ab37be-af42-44da-9dd6-1c09aa6c473a',
-								// companyTutor: {
-								// 	firstName: formValues.companyTutor.firstName,
-								// 	lastName: formValues.companyTutor.lastName,
-								// 	mailAddress: formValues.companyTutor.email,
-								// 	phoneNumber: formValues.companyTutor.firstName,
-								// },
-								company: undefined,
-								companyTutor: undefined,
+						const variables = {
+							...formValues,
+							dates: undefined,
+							startDate: dates.startDate,
+							endDate: dates.endDate,
+							companyId: 'Dassault Systèmes',
+							studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
+							academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
+							companyTutorId: '42ab37be-af42-44da-9dd6-1c09aa6c473a',
+							// companyTutor: {
+							// 	firstName: formValues.companyTutor.firstName,
+							// 	lastName: formValues.companyTutor.lastName,
+							// 	mailAddress: formValues.companyTutor.email,
+							// 	phoneNumber: formValues.companyTutor.firstName,
+							// },
+							company: undefined,
+							companyTutor: undefined,
+						};
+						mutation.mutate(variables, {
+							onSuccess: () => {
+								toast({
+									title: `Internship '${formValues.title}' created.`,
+									status: 'success',
+									duration: 9000,
+									isClosable: true,
+								});
+								router.push('/');
 							},
-							{
-								onSuccess: () => {
-									toast({
-										title: `Internship '${formValues.title}' created.`,
-										status: 'success',
-										duration: 9000,
-										isClosable: true,
-									});
-									router.push('/');
-								},
-							}
-						);
+						});
 						// 2. Has suggestions
 					} else {
 						setSuggestions(suggestions);
