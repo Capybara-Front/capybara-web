@@ -32,7 +32,6 @@ export function AddInternShipForm() {
 	const {
 		handleSubmit,
 		setValue: formSetValue,
-		getValues: formGetValues,
 	} = form;
 
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -129,7 +128,6 @@ export function AddInternShipForm() {
 				});
 		}
 	}
-	console.log(confirmedAddress);
 
 	return (
 		<>
