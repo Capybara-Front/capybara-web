@@ -9,10 +9,10 @@ import {
 	GridItem,
 	Input,
 } from '@chakra-ui/react';
-import { AsyncSelect } from 'chakra-react-select';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useDebouncedCallback } from 'use-debounce';
 import { z } from 'zod';
+import { Autocomplete } from '../ui/autocomplete';
 import { formSchema } from './form-schema';
 
 interface AddressOption {
@@ -84,19 +84,9 @@ export function CompanyFields() {
 						control={control}
 						render={({ field }) => {
 							return (
-								<AsyncSelect
-									inputId="address"
+								<Autocomplete
 									placeholder="Search an address..."
-									instanceId={'react-select-address'}
-									closeMenuOnSelect={false}
 									loadOptions={loadOptions}
-									//  the menu will close when there are no more options to select from.
-									noOptionsMessage={() => null}
-									components={{
-										DropdownIndicator: null,
-										// Do NOT show the selected option value.
-										SingleValue: () => null,
-									}}
 									inputValue={field.value}
 									onInputChange={(value, action) => {
 										// only set the input when the action that caused the
@@ -111,15 +101,6 @@ export function CompanyFields() {
 										field.onChange(val?.value);
 										setFormValue('company.zipCode', val?.zipCode || '');
 										setFormValue('company.city', val?.city || '');
-									}}
-									chakraStyles={{
-										inputContainer: (provided) => ({
-											...provided,
-											display: 'block',
-											':after': {
-												display: 'none',
-											},
-										}),
 									}}
 								/>
 							);
