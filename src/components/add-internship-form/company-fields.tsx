@@ -97,7 +97,7 @@ export function CompanyFields() {
 										if (action.action === 'input-change') field.onChange(value);
 									}}
 									// Pass the 'value' of the options object {label, value} to React hook form value.
-									onChange={(val) => {
+									onChange={(val: any) => {
 										field.onChange(val?.value);
 										setFormValue('company.zipCode', val?.zipCode || '');
 										setFormValue('company.city', val?.city || '');

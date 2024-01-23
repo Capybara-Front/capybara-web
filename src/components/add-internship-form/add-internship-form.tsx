@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { CompanyFields } from './company-fields';
+import { CompanyTutorField } from './company-tutor-field';
 import { formSchema } from './form-schema';
 import { HostFields } from './host-fields';
 import { InternshipFields } from './internship-fields';
@@ -29,10 +30,7 @@ export function AddInternShipForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 	});
-	const {
-		handleSubmit,
-		setValue: formSetValue,
-	} = form;
+	const { handleSubmit, setValue: formSetValue } = form;
 
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [showVerifyAddress, setShowVerifyAddress] = useState(false);
@@ -54,7 +52,7 @@ export function AddInternShipForm() {
 				companyId: 'Dassault Systèmes',
 				studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
 				academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
-				companyTutorId: '42ab37be-af42-44da-9dd6-1c09aa6c473a',
+				companyTutorId: formValues.companyTutorId.value,
 				// companyTutor: {
 				// 	firstName: formValues.companyTutor.firstName,
 				// 	lastName: formValues.companyTutor.lastName,
@@ -154,13 +152,8 @@ export function AddInternShipForm() {
 							<HostFields />
 						</GridItem>
 					</Grid>
-
-					<Box>
-						<Heading mb={4} as="h3" size="md">
-							3. Internship
-						</Heading>
-						<InternshipFields />
-					</Box>
+					<CompanyTutorField />
+					<InternshipFields />
 
 					<Box>
 						{showVerifyAddress && (

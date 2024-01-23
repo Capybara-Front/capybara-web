@@ -28,10 +28,19 @@ export const formSchema = z.object({
 	// 	phoneNumber: z.string().min(2).max(128),
 	// 	email: z.string().email().max(128),
 	// }),
-	companyTutor: z.object({
-		firstName: z.string().min(2).max(128),
-		lastName: z.string().min(2).max(128),
-		phoneNumber: z.string().min(2).max(128),
-		email: z.string().email().max(128),
-	}),
+	companyTutorId: z
+		.object({
+			label: z.string(),
+			value: z.string(),
+		})
+		.required(),
+
+	companyTutor: z
+		.object({
+			firstName: z.string().min(2).max(128),
+			lastName: z.string().min(2).max(128),
+			phoneNumber: z.string().min(2).max(128),
+			email: z.string().email().max(128),
+		})
+		.optional(),
 });
