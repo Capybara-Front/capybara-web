@@ -1,6 +1,7 @@
 import { getCompanyTutors } from '@/api/company/get-company-tutors';
 import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useDebouncedCallback } from 'use-debounce';
 import { z } from 'zod';
 import { Combobox } from '../ui/combobox';
 import { formSchema } from './form-schema';
@@ -11,14 +12,21 @@ export function CompanyTutorField() {
 		control,
 	} = useFormContext<z.infer<typeof formSchema>>();
 
-	async function handleSearch(): Promise<CompanyTutorOption[]> {
-		const res = await getCompanyTutors();
-
-		return res.map((r) => ({
-			value: r.id,
-			label: `${r.firstName} ${r.lastName}`,
-		}));
-	}
+	const handleSearch = useDebouncedCallback(
+		(_, callback: (options: CompanyTutorOption[]) => void) => {
+			getCompanyTutors()
+				.then((res: any) => {
+					callback(
+						res.map((r: any) => ({
+							value: r.id,
+							label: `${r.firstName} ${r.lastName}`,
+						}))
+					);
+				})
+				.catch(() => callback([]));
+		},
+		1000
+	);
 
 	return (
 		<FormControl isInvalid={Boolean(errors.companyTutorId)}>
@@ -30,8 +38,9 @@ export function CompanyTutorField() {
 					return (
 						<Combobox
 							{...field}
+							cacheOptions={false}
 							inputId="companyTutorId"
-							placeholder="Search an company tutor"
+							placeholder="Search..."
 							loadOptions={handleSearch}
 						/>
 					);
