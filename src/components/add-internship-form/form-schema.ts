@@ -22,18 +22,18 @@ export const formSchema = z.object({
 			.refine((val) => val.length >= 5, 'The zip code must be 5 characters.')
 			.refine((val) => /^\d+$/.test(val), 'The zip code is invalid.'),
 	}),
-	// academicTutorId: z
-	// 	.object({
-	// 		label: z.string(),
-	// 		value: z.string(),
-	// 	})
-	// 	.required(),
-	// academicTutor: z.object({
-	// 	firstName: z.string().min(2).max(128),
-	// 	lastName: z.string().min(2).max(128),
-	// 	phoneNumber: z.string().min(2).max(128),
-	// 	email: z.string().email().max(128),
-	// }),
+	academicTutorId: z
+		.object({
+			label: z.string(),
+			value: z.string(),
+		})
+		.required(),
+	academicTutor: z.object({
+		firstName: z.string().min(2).max(128),
+		lastName: z.string().min(2).max(128),
+		phoneNumber: z.string().min(2).max(128),
+		email: z.string().email().max(128),
+	}),
 	companyTutorId: z
 		.object({
 			label: z.string(),

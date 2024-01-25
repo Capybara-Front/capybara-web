@@ -19,7 +19,7 @@ interface IAddInternsipRequestModel {
 	studentId: string;
 	companyId?: string;
 	company?: IAddCompanyRequestModel;
-	academicTutorId: string;
+	academicTutorId?: string;
 	academicTutor?: ITutorRequestModel;
 	companyTutorId?: string;
 	companyTutor?: ITutorRequestModel;

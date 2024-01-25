@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { AcademicTutorField } from './academic-tutor-field';
 import { CompanyFields } from './company-fields';
 import { CompanyTutorField } from './company-tutor-field';
 import { formSchema } from './form-schema';
@@ -47,7 +48,14 @@ export function AddInternShipForm() {
 			endDate: dates.endDate,
 			companyId: 'Dassault Systèmes',
 			studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
-			academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
+
+			academicTutorId: formValues.academicTutorId.value
+				? formValues.academicTutorId.value
+				: undefined,
+			academicTutor: formValues.academicTutor
+				? formValues.academicTutor
+				: undefined,
+
 			companyTutorId: formValues.companyTutorId.value
 				? formValues.companyTutorId.value
 				: undefined,
@@ -135,9 +143,9 @@ export function AddInternShipForm() {
 							<CompanyFields />
 						</GridItem>
 
-						<GridItem display="flex" flexDirection="column" gap={4}>
+						<GridItem display="flex" flexDirection="column" gap={10}>
 							<CompanyTutorField />
-							{/* <AcademicTutorField /> */}
+							<AcademicTutorField />
 						</GridItem>
 					</Grid>
 
