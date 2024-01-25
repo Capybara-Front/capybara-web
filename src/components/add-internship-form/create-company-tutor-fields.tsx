@@ -15,7 +15,6 @@ export function CreateCompanyTutorFields() {
 	const {
 		register,
 		formState: { errors },
-		setValue: setFormValue,
 	} = useFormContext<z.infer<typeof formSchema>>();
 
 	return (
