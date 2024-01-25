@@ -1,4 +1,4 @@
-export interface ICompanyTutorDto {
+export interface ITutorDto {
 	id: string;
 	firstName: string;
 	lastName: string;

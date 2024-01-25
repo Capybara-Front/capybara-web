@@ -19,7 +19,6 @@ import { z } from 'zod';
 import { CompanyFields } from './company-fields';
 import { CompanyTutorField } from './company-tutor-field';
 import { formSchema } from './form-schema';
-import { HostFields } from './host-fields';
 import { InternshipFields } from './internship-fields';
 import { VerifyAddress } from './verify-address';
 import { VerifyAddressError } from './verify-address-error';
@@ -41,27 +40,24 @@ export function AddInternShipForm() {
 		mutationFn: addInternship,
 	});
 
-	function onSubmit(formValues: z.infer<typeof formSchema>) {
+	function onSubmit({ dates, ...formValues }: z.infer<typeof formSchema>) {
+		const variables = {
+			...formValues,
+			startDate: dates.startDate,
+			endDate: dates.endDate,
+			companyId: 'Dassault Systèmes',
+			studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
+			academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
+			companyTutorId: formValues.companyTutorId.value
+				? formValues.companyTutorId.value
+				: undefined,
+			companyTutor: formValues.companyTutor
+				? formValues.companyTutor
+				: undefined,
+			company: undefined,
+		};
+
 		if (confirmedAddress === formValues.company.address) {
-			const { dates } = formValues;
-			const variables = {
-				...formValues,
-				dates: undefined,
-				startDate: dates.startDate,
-				endDate: dates.endDate,
-				companyId: 'Dassault Systèmes',
-				studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
-				academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
-				companyTutorId: formValues.companyTutorId.value,
-				// companyTutor: {
-				// 	firstName: formValues.companyTutor.firstName,
-				// 	lastName: formValues.companyTutor.lastName,
-				// 	mailAddress: formValues.companyTutor.email,
-				// 	phoneNumber: formValues.companyTutor.firstName,
-				// },
-				company: undefined,
-				companyTutor: undefined,
-			};
 			mutation.mutate(variables, {
 				onSuccess: () => {
 					toast({
@@ -82,25 +78,6 @@ export function AddInternShipForm() {
 						setShowVerifyAddress(false);
 						setShowAddressError(false);
 
-						const { dates } = formValues;
-						const variables = {
-							...formValues,
-							dates: undefined,
-							startDate: dates.startDate,
-							endDate: dates.endDate,
-							companyId: 'Dassault Systèmes',
-							studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
-							academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
-							companyTutorId: '42ab37be-af42-44da-9dd6-1c09aa6c473a',
-							// companyTutor: {
-							// 	firstName: formValues.companyTutor.firstName,
-							// 	lastName: formValues.companyTutor.lastName,
-							// 	mailAddress: formValues.companyTutor.email,
-							// 	phoneNumber: formValues.companyTutor.firstName,
-							// },
-							company: undefined,
-							companyTutor: undefined,
-						};
 						mutation.mutate(variables, {
 							onSuccess: () => {
 								toast({
@@ -137,23 +114,32 @@ export function AddInternShipForm() {
 					as="form"
 					onSubmit={handleSubmit(onSubmit)}
 				>
-					<Grid templateColumns="repeat(2,1fr)" gap={12}>
-						<GridItem>
-							<Heading mb={4} as="h3" size="md">
-								1. Company
-							</Heading>
-							<CompanyFields />
+					<Grid templateColumns="repeat(2,1fr)" columnGap={12} rowGap={4}>
+						<GridItem colSpan={2}>
+							<InternshipFields />
 						</GridItem>
 
 						<GridItem>
-							<Heading mb={4} as="h3" size="md">
-								2. Company tutor
+							<Heading as="h3" size="md">
+								Company
 							</Heading>
-							<HostFields />
+						</GridItem>
+
+						<GridItem>
+							<Heading as="h3" size="md">
+								Tutors
+							</Heading>
+						</GridItem>
+
+						<GridItem>
+							<CompanyFields />
+						</GridItem>
+
+						<GridItem display="flex" flexDirection="column" gap={4}>
+							<CompanyTutorField />
+							{/* <AcademicTutorField /> */}
 						</GridItem>
 					</Grid>
-					<CompanyTutorField />
-					<InternshipFields />
 
 					<Box>
 						{showVerifyAddress && (

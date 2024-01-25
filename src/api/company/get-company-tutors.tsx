@@ -1,8 +1,8 @@
 import { ApiResponseDto } from '../api-response.dto';
 import { fetcher } from '../fetcher';
-import { ICompanyTutorDto } from './company-tutor.dto';
+import { ITutorDto } from './company-tutor.dto';
 
-type Response = Promise<ApiResponseDto<ICompanyTutorDto[]>>;
+type Response = Promise<ApiResponseDto<ITutorDto[]>>;
 
 export async function getCompanyTutors() {
 	try {
