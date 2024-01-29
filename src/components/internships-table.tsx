@@ -1,8 +1,29 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import {IconButton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
-import { MdFileUpload } from 'react-icons/md'
+import { MdFileUpload } from 'react-icons/md';
+import FileUpload from './upload-file-form';
+import { InternshipsTableProps } from '@/api/internship/get-internships';
 
-const InternshipsTable = ({}) => {
+const InternshipsTable = ({ data }: { data: any}) => {
+
+  const [isUploadPopupOpen, setUploadPopupOpen] = useState(false);
+
+  const openUploadPopup = () => {
+    setUploadPopupOpen(true);
+  };
+
+  const closeUploadPopup = () => {
+    setUploadPopupOpen(false);
+  };
+
+  const handleUpload = (file) => {
+    // Implement logic to handle the file upload
+    console.log('Uploading file:', file);
+  };
+
+  console.log('----data : ', data);
+
   return (
       <Table size='md'>
         <Thead>
@@ -17,17 +38,24 @@ const InternshipsTable = ({}) => {
         </Thead>
         <Tbody>
           <Tr>
-            <Td style={{ textAlign: "center" }}>281233</Td>
-            <Td style={{ textAlign: "center" }}>10/06/2023</Td>
-            <Td style={{ textAlign: "center" }}>10/09/2023</Td>
+            <Td style={{ textAlign: "center" }}>'data.id'</Td>
+            <Td style={{ textAlign: "center" }}>"data.startDate"</Td>
+            <Td style={{ textAlign: "center" }}>"data.endDate"</Td>
             <Td style={{ textAlign: "center" }}>90 Days</Td>
-            <Td style={{ textAlign: "center" }}>L3 Internship - Web Dev</Td>
+            <Td style={{ textAlign: "center" }}>'data.title'</Td>
             <Td style={{ textAlign: "center" }}>
               <IconButton
               aria-label="expand row"
               fontSize='2xl'
-              icon={<MdFileUpload/>}>
+              icon={<MdFileUpload/>}
+              onClick={openUploadPopup}>
               </IconButton>
+
+              <FileUpload
+              isOpen={isUploadPopupOpen}
+              onClose={closeUploadPopup}
+              onUpload={handleUpload}
+               />
             </Td>
           </Tr>
           <Tr>
@@ -40,8 +68,15 @@ const InternshipsTable = ({}) => {
               <IconButton
               aria-label="expand row"
               fontSize='2xl'
-              icon={<MdFileUpload/>}>
+              icon={<MdFileUpload/>}
+              onClick={openUploadPopup}>
               </IconButton>
+
+              <FileUpload
+              isOpen={isUploadPopupOpen}
+              onClose={closeUploadPopup}
+              onUpload={handleUpload}
+               />
             </Td>
           </Tr>
         </Tbody>
