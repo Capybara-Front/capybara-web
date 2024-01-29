@@ -11,7 +11,7 @@ import { useFormContext } from 'react-hook-form';
 import { z } from 'zod';
 import { formSchema } from './form-schema';
 
-export function CreateCompanyTutorFields() {
+export function CreateAcademicTutorFields() {
 	const {
 		register,
 		formState: { errors },
@@ -22,13 +22,13 @@ export function CreateCompanyTutorFields() {
 			<GridItem>
 				<FormControl
 					isRequired
-					isInvalid={Boolean(errors.companyTutor?.firstName)}
+					isInvalid={Boolean(errors.academicTutor?.firstName)}
 				>
 					<FormLabel htmlFor="firstName">First Name</FormLabel>
-					<Input id="firstName" {...register('companyTutor.firstName')} />
+					<Input id="firstName" {...register('academicTutor.firstName')} />
 					<FormErrorMessage>
-						{errors.companyTutor?.firstName &&
-							errors.companyTutor?.firstName.message}
+						{errors.academicTutor?.firstName &&
+							errors.academicTutor?.firstName.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
@@ -36,23 +36,13 @@ export function CreateCompanyTutorFields() {
 			<GridItem>
 				<FormControl
 					isRequired
-					isInvalid={Boolean(errors.companyTutor?.lastName)}
+					isInvalid={Boolean(errors.academicTutor?.lastName)}
 				>
 					<FormLabel htmlFor="lastName">Last Name</FormLabel>
-					<Input id="lastName" {...register('companyTutor.lastName')} />
+					<Input id="lastName" {...register('academicTutor.lastName')} />
 					<FormErrorMessage>
-						{errors.companyTutor?.lastName &&
-							errors.companyTutor?.lastName.message}
-					</FormErrorMessage>
-				</FormControl>
-			</GridItem>
-
-			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.companyTutor?.email)}>
-					<FormLabel htmlFor="email">Email</FormLabel>
-					<Input id="email" {...register('companyTutor.email')} />
-					<FormErrorMessage>
-						{errors.companyTutor?.email && errors.companyTutor?.email.message}
+						{errors.academicTutor?.lastName &&
+							errors.academicTutor?.lastName.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>
@@ -60,13 +50,26 @@ export function CreateCompanyTutorFields() {
 			<GridItem>
 				<FormControl
 					isRequired
-					isInvalid={Boolean(errors.companyTutor?.phoneNumber)}
+					isInvalid={Boolean(errors.academicTutor?.email)}
+				>
+					<FormLabel htmlFor="email">Email</FormLabel>
+					<Input id="email" {...register('academicTutor.email')} />
+					<FormErrorMessage>
+						{errors.academicTutor?.email && errors.academicTutor?.email.message}
+					</FormErrorMessage>
+				</FormControl>
+			</GridItem>
+
+			<GridItem>
+				<FormControl
+					isRequired
+					isInvalid={Boolean(errors.academicTutor?.phoneNumber)}
 				>
 					<FormLabel htmlFor="phoneNumber">Phone number</FormLabel>
-					<Input id="phoneNumber" {...register('companyTutor.phoneNumber')} />
+					<Input id="phoneNumber" {...register('academicTutor.phoneNumber')} />
 					<FormErrorMessage>
-						{errors.companyTutor?.phoneNumber &&
-							errors.companyTutor?.phoneNumber.message}
+						{errors.academicTutor?.phoneNumber &&
+							errors.academicTutor?.phoneNumber.message}
 					</FormErrorMessage>
 				</FormControl>
 			</GridItem>

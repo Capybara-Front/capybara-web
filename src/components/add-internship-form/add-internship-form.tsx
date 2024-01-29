@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { AcademicTutorField } from './academic-tutor-field';
 import { CompanyFields } from './company-fields';
 import { CompanyTutorField } from './company-tutor-field';
 import { formSchema } from './form-schema';
@@ -47,7 +48,14 @@ export function AddInternShipForm() {
 			endDate: dates.endDate,
 			companyId: 'Dassault Systèmes',
 			studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
-			academicTutorId: '8ecc03fe-0200-4a36-9b29-981a5c69f64d',
+
+			academicTutorId: formValues.academicTutorId.value
+				? formValues.academicTutorId.value
+				: undefined,
+			academicTutor: formValues.academicTutor
+				? formValues.academicTutor
+				: undefined,
+
 			companyTutorId: formValues.companyTutorId.value
 				? formValues.companyTutorId.value
 				: undefined,
@@ -105,83 +113,77 @@ export function AddInternShipForm() {
 	}
 
 	return (
-		<>
-			<Heading mb={7}>Add internship</Heading>
-			<FormProvider {...form}>
-				<Flex
-					direction="column"
-					gap={12}
-					as="form"
-					onSubmit={handleSubmit(onSubmit)}
-				>
-					<Grid templateColumns="repeat(2,1fr)" columnGap={12} rowGap={4}>
-						<GridItem colSpan={2}>
-							<InternshipFields />
-						</GridItem>
+		<FormProvider {...form}>
+			<Flex
+				direction="column"
+				gap={12}
+				as="form"
+				onSubmit={handleSubmit(onSubmit)}
+			>
+				<Grid templateColumns="repeat(2,1fr)" columnGap={12} rowGap={4}>
+					<GridItem colSpan={2}>
+						<InternshipFields />
+					</GridItem>
 
-						<GridItem>
-							<Heading as="h3" size="md">
-								Company
-							</Heading>
-						</GridItem>
+					<GridItem>
+						<Heading as="h3" size="md">
+							Company
+						</Heading>
+					</GridItem>
 
-						<GridItem>
-							<Heading as="h3" size="md">
-								Tutors
-							</Heading>
-						</GridItem>
+					<GridItem>
+						<Heading as="h3" size="md">
+							Tutors
+						</Heading>
+					</GridItem>
 
-						<GridItem>
-							<CompanyFields />
-						</GridItem>
+					<GridItem>
+						<CompanyFields />
+					</GridItem>
 
-						<GridItem display="flex" flexDirection="column" gap={4}>
-							<CompanyTutorField />
-							{/* <AcademicTutorField /> */}
-						</GridItem>
-					</Grid>
+					<GridItem display="flex" flexDirection="column" gap={10}>
+						<CompanyTutorField />
+						<AcademicTutorField />
+					</GridItem>
+				</Grid>
 
-					<Box>
-						{showVerifyAddress && (
-							<VerifyAddress
-								entered={form.getValues('company.address')}
-								suggestions={suggestions}
-								onSave={(selectedSuggestion) => {
-									if (selectedSuggestion) {
-										formSetValue('company.address', selectedSuggestion.label);
-										formSetValue(
-											'company.zipCode',
-											selectedSuggestion.postcode
-										);
-										formSetValue('company.city', selectedSuggestion.city);
-										setConfirmedAddress(selectedSuggestion.label);
-									}
-									// We selected the entered address
-									setShowVerifyAddress(false);
-									setConfirmedAddress(form.getValues('company.address'));
-								}}
-							/>
-						)}
-						{showAddressError && (
-							<VerifyAddressError
-								onSave={() => {
-									setShowAddressError(false);
-									setConfirmedAddress(form.getValues('company.address'));
-								}}
-							/>
-						)}
+				<Box>
+					{showVerifyAddress && (
+						<VerifyAddress
+							entered={form.getValues('company.address')}
+							suggestions={suggestions}
+							onSave={(selectedSuggestion) => {
+								if (selectedSuggestion) {
+									formSetValue('company.address', selectedSuggestion.label);
+									formSetValue('company.zipCode', selectedSuggestion.postcode);
+									formSetValue('company.city', selectedSuggestion.city);
+									setConfirmedAddress(selectedSuggestion.label);
+								}
+								// We selected the entered address
+								setShowVerifyAddress(false);
+								setConfirmedAddress(form.getValues('company.address'));
+							}}
+						/>
+					)}
+					{showAddressError && (
+						<VerifyAddressError
+							onSave={() => {
+								setShowAddressError(false);
+								setConfirmedAddress(form.getValues('company.address'));
+							}}
+						/>
+					)}
 
-						<Button
-							type="submit"
-							mt={5}
-							isLoading={mutation.isPending}
-							isDisabled={showVerifyAddress}
-						>
-							Submit
-						</Button>
-					</Box>
-				</Flex>
-			</FormProvider>
-		</>
+					<Button
+						type="submit"
+						mt={5}
+						isLoading={mutation.isPending}
+						isDisabled={showVerifyAddress}
+					>
+						Submit
+					</Button>
+				</Box>
+			</Flex>
+		</FormProvider>
 	);
 }

@@ -1,4 +1,4 @@
-import { getCompanyTutors } from '@/api/company/get-company-tutors';
+import { getAcademicTutors } from '@/api/company/get-academic-tutors';
 import {
 	Box,
 	Button,
@@ -14,19 +14,21 @@ import { MdArrowBack } from 'react-icons/md';
 import { useDebouncedCallback } from 'use-debounce';
 import { z } from 'zod';
 import { Combobox } from '../ui/combobox';
-import { CreateCompanyTutorFields } from './create-company-tutor-fields';
+import { CreateAcademicTutorFields } from './create-academic-tutor-fields';
 import { formSchema } from './form-schema';
 
-export function CompanyTutorField() {
+export function AcademicTutorField() {
 	const {
 		formState: { errors },
 		control,
 		setValue: setFormValue,
 	} = useFormContext<z.infer<typeof formSchema>>();
 
+	const [openCreateForm, setOpenCreateForm] = useState(false);
+
 	const handleSearch = useDebouncedCallback(
-		(_, callback: (options: CompanyTutorOption[]) => void) => {
-			getCompanyTutors()
+		(_, callback: (options: { value: string; label: string }[]) => void) => {
+			getAcademicTutors()
 				.then((res: any) => {
 					callback(
 						res.map((r: any) => ({
@@ -40,12 +42,10 @@ export function CompanyTutorField() {
 		1000
 	);
 
-	const [openCreateForm, setOpenCreateForm] = useState(false);
-
 	return openCreateForm ? (
 		<Box>
 			<HStack justify="space-between" mb={4}>
-				<Text fontWeight="500">Company tutor</Text>
+				<Text fontWeight="500">Academic tutor</Text>
 				<Button
 					leftIcon={<MdArrowBack />}
 					variant="link"
@@ -53,24 +53,24 @@ export function CompanyTutorField() {
 					justifyContent="end"
 					onClick={() => setOpenCreateForm(false)}
 				>
-					Select a company tutor
+					Select an academic tutor
 				</Button>
 			</HStack>
-			<CreateCompanyTutorFields />
+			<CreateAcademicTutorFields />
 		</Box>
 	) : (
 		<HStack align="end">
-			<FormControl isInvalid={Boolean(errors.companyTutorId)} isRequired>
-				<FormLabel htmlFor="companyTutorId">Company tutor</FormLabel>
+			<FormControl isInvalid={Boolean(errors.academicTutorId)} isRequired>
+				<FormLabel htmlFor="academicTutorId">Academic tutor</FormLabel>
 				<Controller
-					name="companyTutorId"
+					name="academicTutorId"
 					control={control}
 					render={({ field }) => {
 						return (
 							<Combobox
 								{...field}
 								cacheOptions={false}
-								inputId="companyTutorId"
+								inputId="academicTutorId"
 								placeholder="Search..."
 								loadOptions={handleSearch}
 							/>
@@ -78,13 +78,13 @@ export function CompanyTutorField() {
 					}}
 				/>
 				<FormErrorMessage>
-					{errors.companyTutorId && errors.companyTutorId.message}
+					{errors.academicTutorId && errors.academicTutorId.message}
 				</FormErrorMessage>
 			</FormControl>
 			<Button
 				variant="outline"
 				onClick={() => {
-					setFormValue('companyTutorId', { label: '', value: '' });
+					setFormValue('academicTutorId', { label: '', value: '' });
 					setOpenCreateForm(true);
 				}}
 			>
@@ -92,9 +92,4 @@ export function CompanyTutorField() {
 			</Button>
 		</HStack>
 	);
-}
-
-interface CompanyTutorOption {
-	value: string;
-	label: string;
 }
