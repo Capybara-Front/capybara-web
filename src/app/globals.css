@@ -9,22 +9,6 @@ nav {
     color: white;
 }
 
-.search-bar-input{
-    width:530px;
-    height:40px;
-    border-radius: 5px;
-}
-
-.search-bar{
-    margin-left: -10%;
-    width:550px;
-    height:40px;
-}
-
-.user-name{
-    margin-right: -30%;
-}
-
 .add-internship-button{
     float: right;
     margin-top: 5%;

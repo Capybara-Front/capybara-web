@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default async function Home() {
 	const currentUser = 'Your Name';
 	const data = await getInternships();
-	
+	console.log('Data : ',data);
 	return (
 		<main>
 			<Container maxWidth="5xl" pt={16}>

@@ -4,8 +4,9 @@ import {IconButton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { MdFileUpload } from 'react-icons/md';
 import FileUpload from './upload-file-form';
 import { InternshipsTableProps } from '@/api/internship/get-internships';
+import { DateUtil } from '@/utils/date.util';
 
-const InternshipsTable = ({ data }: { data: any}) => {
+const InternshipsTable = ({ data }: { data: InternshipsTableProps[]}) => {
 
   const [isUploadPopupOpen, setUploadPopupOpen] = useState(false);
 
@@ -22,10 +23,8 @@ const InternshipsTable = ({ data }: { data: any}) => {
     console.log('Uploading file:', file);
   };
 
-  console.log('----data : ', data);
-
   return (
-      <Table size='md'>
+      <Table size='lg'>
         <Thead>
           <Tr>
             <Th  style={{ textAlign: "center" }}>Internship ID</Th>
@@ -33,16 +32,19 @@ const InternshipsTable = ({ data }: { data: any}) => {
             <Th  style={{ textAlign: "center" }}>End Date</Th>
             <Th  style={{ textAlign: "center" }}>Duration</Th>
             <Th  style={{ textAlign: "center" }}>Title</Th>
+            <Th  style={{ textAlign: "center" }}>Status</Th>
             <Th  style={{ textAlign: "center" }}>Documents</Th>
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td style={{ textAlign: "center" }}>'data.id'</Td>
-            <Td style={{ textAlign: "center" }}>"data.startDate"</Td>
-            <Td style={{ textAlign: "center" }}>"data.endDate"</Td>
-            <Td style={{ textAlign: "center" }}>90 Days</Td>
-            <Td style={{ textAlign: "center" }}>'data.title'</Td>
+         {data.map(internship =>
+          <Tr key={internship.id}>
+            <Td style={{ textAlign: "center" }}>{internship.id}</Td>
+            <Td style={{ textAlign: "center" }}>{DateUtil.formatUSDate(internship.startDate)}</Td>
+            <Td style={{ textAlign: "center" }}>{DateUtil.formatUSDate(internship.endDate)}</Td>
+            <Td style={{ textAlign: "center" }}>{DateUtil.diffInDays(new Date(internship.startDate),new Date(internship.endDate))} Days</Td>
+            <Td style={{ textAlign: "center" }}>{internship.title}</Td>
+            <Td style={{ textAlign: "center" }}>{internship.status}</Td>
             <Td style={{ textAlign: "center" }}>
               <IconButton
               aria-label="expand row"
@@ -58,27 +60,7 @@ const InternshipsTable = ({ data }: { data: any}) => {
                />
             </Td>
           </Tr>
-          <Tr>
-            <Td style={{ textAlign: "center" }}>281213</Td>
-            <Td style={{ textAlign: "center" }}>10/06/2024</Td>
-            <Td style={{ textAlign: "center" }}>10/09/2024</Td>
-            <Td style={{ textAlign: "center" }}>90 Days</Td>
-            <Td style={{ textAlign: "center" }}>M1 Internship - App Dev</Td>
-            <Td style={{ textAlign: "center" }}>
-              <IconButton
-              aria-label="expand row"
-              fontSize='2xl'
-              icon={<MdFileUpload/>}
-              onClick={openUploadPopup}>
-              </IconButton>
-
-              <FileUpload
-              isOpen={isUploadPopupOpen}
-              onClose={closeUploadPopup}
-              onUpload={handleUpload}
-               />
-            </Td>
-          </Tr>
+        )}
         </Tbody>
       </Table>
   );

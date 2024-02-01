@@ -1,3 +1,5 @@
+import { error } from "console";
+
 export class DateUtil {
 	static isValidDate(value: string | Date) {
 		if (typeof value === 'string') {
@@ -18,5 +20,13 @@ export class DateUtil {
 		}
 
 		return diffInMs / (1000 * 60 * 60 * 24);
+	}
+	static formatUSDate(stringDate: string): string {
+
+		const date = new Date(stringDate);
+		const month = (date.getMonth() + 1).toString().padStart(2, '0');
+		const day = date.getDate().toString().padStart(2, '0');
+		const year = date.getFullYear();
+		return `${month}/${day}/${year}`;
 	}
 }
