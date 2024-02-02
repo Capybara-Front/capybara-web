@@ -1,51 +1,41 @@
 import React from 'react';
-import {IconButton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { IconButton, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { MdFileUpload } from 'react-icons/md'
 
-const InternshipsTable = ({}) => {
+const InternshipsTable = ({ data }) => {
   return (
-      <Table size='md'>
-        <Thead>
-          <Tr>
-            <Th  style={{ textAlign: "center" }}>Internship ID</Th>
-            <Th  style={{ textAlign: "center" }}>Starting Date</Th>
-            <Th  style={{ textAlign: "center" }}>End Date</Th>
-            <Th  style={{ textAlign: "center" }}>Duration</Th>
-            <Th  style={{ textAlign: "center" }}>Title</Th>
-            <Th  style={{ textAlign: "center" }}>Documents</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <Tr>
-            <Td style={{ textAlign: "center" }}>281233</Td>
-            <Td style={{ textAlign: "center" }}>10/06/2023</Td>
-            <Td style={{ textAlign: "center" }}>10/09/2023</Td>
-            <Td style={{ textAlign: "center" }}>90 Days</Td>
-            <Td style={{ textAlign: "center" }}>L3 Internship - Web Dev</Td>
-            <Td style={{ textAlign: "center" }}>
-              <IconButton
-              aria-label="expand row"
-              fontSize='2xl'
-              icon={<MdFileUpload/>}>
-              </IconButton>
-            </Td>
-          </Tr>
-          <Tr>
-            <Td style={{ textAlign: "center" }}>281213</Td>
-            <Td style={{ textAlign: "center" }}>10/06/2024</Td>
-            <Td style={{ textAlign: "center" }}>10/09/2024</Td>
-            <Td style={{ textAlign: "center" }}>90 Days</Td>
-            <Td style={{ textAlign: "center" }}>M1 Internship - App Dev</Td>
-            <Td style={{ textAlign: "center" }}>
-              <IconButton
-              aria-label="expand row"
-              fontSize='2xl'
-              icon={<MdFileUpload/>}>
-              </IconButton>
-            </Td>
-          </Tr>
-        </Tbody>
-      </Table>
+    <Table size='md'>
+      <Thead>
+        <Tr>
+          <Th style={{ textAlign: "center" }}>Internship ID</Th>
+          <Th style={{ textAlign: "center" }}>Starting Date</Th>
+          <Th style={{ textAlign: "center" }}>End Date</Th>
+          <Th style={{ textAlign: "center" }}>Duration</Th>
+          <Th style={{ textAlign: "center" }}>Title</Th>
+          <Th style={{ textAlign: "center" }}>Documents</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {
+          data.map((internship: any) => (
+            <Tr key={internship.id}>
+              <Td style={{ textAlign: "center" }}>{internship.id}</Td>
+              <Td style={{ textAlign: "center" }}>{internship.startDate}</Td>
+              <Td style={{ textAlign: "center" }}>{internship.endDate}</Td>
+              <Td style={{ textAlign: "center" }}>{internship.duration}</Td>
+              <Td style={{ textAlign: "center" }}>{internship.title}</Td>
+              <Td style={{ textAlign: "center" }}>
+                <IconButton
+                  aria-label="expand row"
+                  fontSize='2xl'
+                  icon={<MdFileUpload />}>
+                </IconButton>
+              </Td>
+            </Tr>
+          ))
+        }
+      </Tbody>
+    </Table>
   );
 };
 

@@ -6,8 +6,7 @@ type Response = Promise<ApiResponseDto<ITutorDto[]>>;
 
 export async function getCompanyTutors() {
 	try {
-		const res = await fetcher<Response>('/company-tutors');
-		return res.content;
+		return await fetcher<Response>('/company-tutors');
 	} catch (err) {
 		return Promise.reject(new Error('Unable to get company tutors.'));
 	}

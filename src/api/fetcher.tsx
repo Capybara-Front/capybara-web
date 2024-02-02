@@ -11,7 +11,7 @@ export async function fetcher<T>(url: string, init?: RequestInit): Promise<T> {
 			return Promise.reject(res);
 		}
 
-		return await res.json();
+		return (await res.json())?.content;
 	} catch (err) {
 		console.error(err);
 		return Promise.reject();

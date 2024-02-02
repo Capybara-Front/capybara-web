@@ -1,10 +1,14 @@
+import { getInternships } from '@/api/internship/get-internships';
 import InternshipsTable from '@/components/internships-table';
 import Navbar from '@/components/navbar';
 import { Heading, Button, Container, Flex, Stack } from '@chakra-ui/react';
 import Link from 'next/link';
 
-export default function Home() {
+export default async function Home() {
 	const currentUser = 'Your Name';
+
+	const internships = await getInternships();
+
 	return (
 		<main>
 			<Container maxWidth="5xl" pt={16}>
@@ -16,7 +20,7 @@ export default function Home() {
 						Add new internship
 					</Button>
 				</Flex>
-				<InternshipsTable />
+				<InternshipsTable data={internships} />
 			</Container>
 		</main>
 	);
