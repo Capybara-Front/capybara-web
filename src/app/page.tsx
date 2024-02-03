@@ -1,6 +1,6 @@
 import { getInternships } from '@/api/internship/get-internships';
 import InternshipsTable from '@/components/internships-table';
-import { Heading, Button, Container, Flex, Stack } from '@chakra-ui/react';
+import { Heading, Button, Container, Flex } from '@chakra-ui/react';
 import Link from 'next/link';
 
 export default async function Home() {
