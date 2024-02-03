@@ -5,8 +5,9 @@ import Link from 'next/link';
 
 export default async function Home() {
 	const currentUser = 'Your Name';
-	const data = await getInternships();
-	console.log('Data : ',data);
+
+	const internships = await getInternships();
+
 	return (
 		<main>
 			<Container maxWidth="5xl" pt={16}>
@@ -18,7 +19,7 @@ export default async function Home() {
 						Add new internship
 					</Button>
 				</Flex>
-			<InternshipsTable data={data}/>
+				<InternshipsTable data={internships} />
 			</Container>
 		</main>
 	);

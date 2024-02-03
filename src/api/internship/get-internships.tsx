@@ -1,4 +1,3 @@
-
 export async function getInternships() : Promise<InternshipsTableProps[] | undefined >{
 	try {
 		const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${'/internships'}`);

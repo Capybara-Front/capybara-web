@@ -46,7 +46,7 @@ export function AddInternShipForm() {
 			...formValues,
 			startDate: dates.startDate,
 			endDate: dates.endDate,
-			companyId: 'Dassault Systèmes',
+			companyId: 'Dassault',
 			studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
 
 			academicTutorId: formValues.academicTutorId.value
