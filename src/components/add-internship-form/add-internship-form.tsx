@@ -133,7 +133,7 @@ export function AddInternShipForm() {
 						<InternshipFields />
 					</GridItem>
 
-					<GridItem display="grid" gap={4}>
+					<GridItem display="grid" gap={4} alignSelf="start">
 						<CompanyFields />
 						{watchCompanyId && <CompanyTutorField />}
 					</GridItem>
