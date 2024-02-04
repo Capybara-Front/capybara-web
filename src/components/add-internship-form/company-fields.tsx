@@ -21,6 +21,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { z } from 'zod';
 import { Autocomplete } from '../ui/autocomplete';
 import { Combobox } from '../ui/combobox';
+import { CreateCompanyTutorFields } from './create-company-tutor-fields';
 import { formSchema } from './form-schema';
 
 interface AddressOption {
@@ -186,6 +187,12 @@ export function CompanyFields() {
 							{errors.company?.zipCode && errors.company?.zipCode.message}
 						</FormErrorMessage>
 					</FormControl>
+				</GridItem>
+				<GridItem colSpan={2}>
+					<Text fontWeight="500" mb={4}>
+						Company tutor
+					</Text>
+					<CreateCompanyTutorFields />
 				</GridItem>
 			</Grid>
 		</Box>

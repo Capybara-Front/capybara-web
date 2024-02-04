@@ -14,10 +14,12 @@ export const formSchema = z.object({
 		),
 	salary: z.coerce.number().min(1),
 
-	companyId: z.object({
-		label: z.string(),
-		value: z.string(),
-	}),
+	companyId: z
+		.object({
+			label: z.string(),
+			value: z.string(),
+		})
+		.optional(),
 	company: z
 		.object({
 			name: z.string().min(2).max(128),
@@ -30,10 +32,12 @@ export const formSchema = z.object({
 		})
 		.optional(),
 
-	academicTutorId: z.object({
-		label: z.string(),
-		value: z.string(),
-	}),
+	academicTutorId: z
+		.object({
+			label: z.string(),
+			value: z.string(),
+		})
+		.optional(),
 	academicTutor: z
 		.object({
 			firstName: z.string().min(2).max(128),
@@ -43,10 +47,12 @@ export const formSchema = z.object({
 		})
 		.optional(),
 
-	companyTutorId: z.object({
-		label: z.string(),
-		value: z.string(),
-	}),
+	companyTutorId: z
+		.object({
+			label: z.string(),
+			value: z.string(),
+		})
+		.optional(),
 	companyTutor: z
 		.object({
 			firstName: z.string().min(2).max(128),

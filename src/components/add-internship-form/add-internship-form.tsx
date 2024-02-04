@@ -41,14 +41,14 @@ export function AddInternShipForm() {
 			endDate: dates.endDate,
 			studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
 
-			academicTutorId: formValues.academicTutorId.value
+			academicTutorId: formValues.academicTutorId?.value
 				? formValues.academicTutorId.value
 				: undefined,
 			academicTutor: formValues.academicTutor
 				? formValues.academicTutor
 				: undefined,
 
-			companyTutorId: formValues.companyTutorId.value
+			companyTutorId: formValues.companyTutorId?.value
 				? formValues.companyTutorId.value
 				: undefined,
 			companyTutor: formValues.companyTutor
@@ -59,11 +59,11 @@ export function AddInternShipForm() {
 						phoneNumber: formValues.companyTutor.phoneNumber,
 						companyName: formValues.company
 							? formValues.company.name
-							: formValues.companyId.label,
+							: formValues.companyId?.label,
 				  }
 				: undefined,
 
-			companyId: formValues.companyId.value
+			companyId: formValues.companyId?.value
 				? formValues.companyId.value
 				: undefined,
 			company: formValues.company ? formValues.company : undefined,
