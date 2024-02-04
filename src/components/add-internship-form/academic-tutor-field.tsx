@@ -29,9 +29,9 @@ export function AcademicTutorField() {
 	const handleSearch = useDebouncedCallback(
 		(_, callback: (options: { value: string; label: string }[]) => void) => {
 			getAcademicTutors()
-				.then((res: any) => {
+				.then((res) => {
 					callback(
-						res.map((r: any) => ({
+						res.map((r) => ({
 							value: r.id,
 							label: `${r.firstName} ${r.lastName}`,
 						}))

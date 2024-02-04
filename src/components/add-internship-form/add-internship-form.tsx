@@ -1,15 +1,7 @@
 'use client';
 import { addInternship } from '@/api/internship/add-internship';
 import { AddressUtil, Suggestion } from '@/utils/address';
-import {
-	Box,
-	Button,
-	Flex,
-	Grid,
-	GridItem,
-	Heading,
-	useToast,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, GridItem, useToast } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -31,6 +23,7 @@ export function AddInternShipForm() {
 		resolver: zodResolver(formSchema),
 	});
 	const { handleSubmit, setValue: formSetValue } = form;
+	const watchCompanyId = form.watch('companyId');
 
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [showVerifyAddress, setShowVerifyAddress] = useState(false);
@@ -46,7 +39,6 @@ export function AddInternShipForm() {
 			...formValues,
 			startDate: dates.startDate,
 			endDate: dates.endDate,
-			companyId: 'Dassault',
 			studentId: '2a63ed36-1450-4ce9-bafc-1a261048e3f2',
 
 			academicTutorId: formValues.academicTutorId.value
@@ -67,17 +59,21 @@ export function AddInternShipForm() {
 						phoneNumber: formValues.companyTutor.phoneNumber,
 						companyName: formValues.company
 							? formValues.company.name
-							: 'TODO company name from the autocomplete',
+							: formValues.companyId.label,
 				  }
 				: undefined,
 
-			// companyId: formValues.companyId.value
-			//     ? formValues.companyTutorId.value
-			//     : undefined,
+			companyId: formValues.companyId.value
+				? formValues.companyId.value
+				: undefined,
 			company: formValues.company ? formValues.company : undefined,
 		};
 
-		if (confirmedAddress === formValues.company.address) {
+		// If address is empty
+		if (
+			!formValues?.company?.address ||
+			confirmedAddress === formValues?.company?.address
+		) {
 			mutation.mutate(variables, {
 				onSuccess: () => {
 					toast({
@@ -90,11 +86,11 @@ export function AddInternShipForm() {
 				},
 			});
 		} else {
-			AddressUtil.getSuggestions(formValues.company.address)
+			AddressUtil.getSuggestions(formValues?.company?.address || '')
 				// Suggestions
 				.then((suggestions) => {
 					// 1. Address is valid
-					if (suggestions[0].label === formValues.company.address) {
+					if (suggestions[0].label === formValues?.company?.address) {
 						setShowVerifyAddress(false);
 						setShowAddressError(false);
 
@@ -137,24 +133,12 @@ export function AddInternShipForm() {
 						<InternshipFields />
 					</GridItem>
 
-					<GridItem>
-						<Heading as="h3" size="md">
-							Company
-						</Heading>
-					</GridItem>
-
-					<GridItem>
-						<Heading as="h3" size="md">
-							Tutors
-						</Heading>
-					</GridItem>
-
-					<GridItem>
+					<GridItem display="grid" gap={4}>
 						<CompanyFields />
+						{watchCompanyId && <CompanyTutorField />}
 					</GridItem>
 
-					<GridItem display="flex" flexDirection="column" gap={10}>
-						<CompanyTutorField />
+					<GridItem>
 						<AcademicTutorField />
 					</GridItem>
 				</Grid>

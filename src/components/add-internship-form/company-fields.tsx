@@ -1,18 +1,26 @@
 'use client';
+import { getCompanies } from '@/api/company/get-companies';
 import { getAddress } from '@/api/get-address';
 import type { Feature } from '@/lib/address-api.type';
 import {
+	Box,
+	Button,
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
 	Grid,
 	GridItem,
+	HStack,
 	Input,
+	Text,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { MdArrowBack } from 'react-icons/md';
 import { useDebouncedCallback } from 'use-debounce';
 import { z } from 'zod';
 import { Autocomplete } from '../ui/autocomplete';
+import { Combobox } from '../ui/combobox';
 import { formSchema } from './form-schema';
 
 interface AddressOption {
@@ -29,7 +37,32 @@ export function CompanyFields() {
 		formState: { errors },
 		control,
 		setValue: setFormValue,
+		resetField,
 	} = useFormContext<z.infer<typeof formSchema>>();
+
+	const handleCompaniesSearch = useDebouncedCallback(
+		(
+			_,
+			callback: (
+				options: {
+					value: string;
+					label: string;
+				}[]
+			) => void
+		) => {
+			getCompanies()
+				.then((res) => {
+					callback(
+						res.map((r) => ({
+							value: r.name,
+							label: r.name,
+						}))
+					);
+				})
+				.catch(() => callback([]));
+		},
+		1000
+	);
 
 	// 1. Call API
 	const handleAddressSearch = useDebouncedCallback(
@@ -64,73 +97,130 @@ export function CompanyFields() {
 			callback([]);
 		}
 	};
-	return (
-		<Grid templateColumns="repeat(2, 1fr)" gap={4}>
-			<GridItem colSpan={2}>
-				<FormControl isRequired isInvalid={Boolean(errors.company?.name)}>
-					<FormLabel htmlFor="company">Company</FormLabel>
-					<Input id="company" {...register('company.name')} />
-					<FormErrorMessage>
-						{errors.company?.name && errors.company?.name.message}
-					</FormErrorMessage>
-				</FormControl>
-			</GridItem>
 
-			<GridItem colSpan={2}>
-				<FormControl isInvalid={Boolean(errors.company?.address)}>
-					<FormLabel htmlFor="address">Address</FormLabel>
-					<Controller
-						name="company.address"
-						control={control}
-						render={({ field }) => {
-							return (
-								<Autocomplete
-									placeholder="Search an address..."
-									loadOptions={loadOptions}
-									inputValue={field.value}
-									onInputChange={(value, action) => {
-										// only set the input when the action that caused the
-										// change equals to "input-change" and ignore the other
-										// ones like: "set-value", "input-blur", and "menu-close"
-										// That behavior doesn't clear input on select
-										// See: https://stackoverflow.com/a/66992102
-										if (action.action === 'input-change') field.onChange(value);
-									}}
-									// Pass the 'value' of the options object {label, value} to React hook form value.
-									onChange={(val: any) => {
-										field.onChange(val?.value);
-										setFormValue('company.zipCode', val?.zipCode || '');
-										setFormValue('company.city', val?.city || '');
-									}}
-								/>
-							);
-						}}
-					/>
-					<FormErrorMessage>
-						{errors.company?.address && errors.company?.address.message}
-					</FormErrorMessage>
-				</FormControl>
-			</GridItem>
+	const [openCreateForm, setOpenCreateForm] = useState(false);
 
-			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.company?.city)}>
-					<FormLabel htmlFor="city">City</FormLabel>
-					<Input id="city" {...register('company.city')} />
-					<FormErrorMessage>
-						{errors.company?.city && errors.company?.city.message}
-					</FormErrorMessage>
-				</FormControl>
-			</GridItem>
+	return openCreateForm ? (
+		<Box>
+			<HStack justify="space-between" mb={4}>
+				<Text fontWeight="500">Company</Text>
+				<Button
+					leftIcon={<MdArrowBack />}
+					variant="link"
+					size="sm"
+					justifyContent="end"
+					onClick={() => {
+						setOpenCreateForm(false);
+						resetField('company.name');
+						resetField('company.address');
+						resetField('company.city');
+						resetField('company.zipCode');
+					}}
+				>
+					Select a company
+				</Button>
+			</HStack>
+			<Grid templateColumns="repeat(2, 1fr)" gap={4}>
+				<GridItem colSpan={2}>
+					<FormControl isRequired isInvalid={Boolean(errors.company?.name)}>
+						<FormLabel htmlFor="companyName">Name</FormLabel>
+						<Input id="companyName" {...register('company.name')} />
+						<FormErrorMessage>
+							{errors.company?.name && errors.company?.name.message}
+						</FormErrorMessage>
+					</FormControl>
+				</GridItem>
 
-			<GridItem>
-				<FormControl isRequired isInvalid={Boolean(errors.company?.zipCode)}>
-					<FormLabel htmlFor="zipCode">Zip code</FormLabel>
-					<Input id="zipCode" {...register('company.zipCode')} />
-					<FormErrorMessage>
-						{errors.company?.zipCode && errors.company?.zipCode.message}
-					</FormErrorMessage>
-				</FormControl>
-			</GridItem>
-		</Grid>
+				<GridItem colSpan={2}>
+					<FormControl isInvalid={Boolean(errors.company?.address)}>
+						<FormLabel htmlFor="address">Address</FormLabel>
+						<Controller
+							name="company.address"
+							control={control}
+							render={({ field }) => {
+								return (
+									<Autocomplete
+										placeholder="Search an address..."
+										loadOptions={loadOptions}
+										inputValue={field.value}
+										onInputChange={(value, action) => {
+											// only set the input when the action that caused the
+											// change equals to "input-change" and ignore the other
+											// ones like: "set-value", "input-blur", and "menu-close"
+											// That behavior doesn't clear input on select
+											// See: https://stackoverflow.com/a/66992102
+											if (action.action === 'input-change')
+												field.onChange(value);
+										}}
+										// Pass the 'value' of the options object {label, value} to React hook form value.
+										onChange={(val: any) => {
+											field.onChange(val?.value);
+											setFormValue('company.zipCode', val?.zipCode || '');
+											setFormValue('company.city', val?.city || '');
+										}}
+									/>
+								);
+							}}
+						/>
+						<FormErrorMessage>
+							{errors.company?.address && errors.company?.address.message}
+						</FormErrorMessage>
+					</FormControl>
+				</GridItem>
+
+				<GridItem>
+					<FormControl isRequired isInvalid={Boolean(errors.company?.city)}>
+						<FormLabel htmlFor="city">City</FormLabel>
+						<Input id="city" {...register('company.city')} />
+						<FormErrorMessage>
+							{errors.company?.city && errors.company?.city.message}
+						</FormErrorMessage>
+					</FormControl>
+				</GridItem>
+
+				<GridItem>
+					<FormControl isRequired isInvalid={Boolean(errors.company?.zipCode)}>
+						<FormLabel htmlFor="zipCode">Zip code</FormLabel>
+						<Input id="zipCode" {...register('company.zipCode')} />
+						<FormErrorMessage>
+							{errors.company?.zipCode && errors.company?.zipCode.message}
+						</FormErrorMessage>
+					</FormControl>
+				</GridItem>
+			</Grid>
+		</Box>
+	) : (
+		<HStack align="end">
+			<FormControl isInvalid={Boolean(errors.companyId)} isRequired>
+				<FormLabel htmlFor="companyId">Company</FormLabel>
+				<Controller
+					name="companyId"
+					control={control}
+					render={({ field }) => {
+						return (
+							<Combobox
+								{...field}
+								cacheOptions={false}
+								inputId="companyId"
+								placeholder="Search..."
+								loadOptions={handleCompaniesSearch}
+							/>
+						);
+					}}
+				/>
+				<FormErrorMessage>
+					{errors.companyId && errors.companyId.message}
+				</FormErrorMessage>
+			</FormControl>
+			<Button
+				variant="outline"
+				onClick={() => {
+					resetField('companyId');
+					setOpenCreateForm(true);
+				}}
+			>
+				New
+			</Button>
+		</HStack>
 	);
 }
