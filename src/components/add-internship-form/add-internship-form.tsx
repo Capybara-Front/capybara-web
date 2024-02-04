@@ -60,9 +60,21 @@ export function AddInternShipForm() {
 				? formValues.companyTutorId.value
 				: undefined,
 			companyTutor: formValues.companyTutor
-				? formValues.companyTutor
+				? {
+						firstName: formValues.companyTutor.firstName,
+						lastName: formValues.companyTutor.lastName,
+						email: formValues.companyTutor.email,
+						phoneNumber: formValues.companyTutor.phoneNumber,
+						companyName: formValues.company
+							? formValues.company.name
+							: 'TODO company name from the autocomplete',
+				  }
 				: undefined,
-			company: undefined,
+
+			// companyId: formValues.companyId.value
+			//     ? formValues.companyTutorId.value
+			//     : undefined,
+			company: formValues.company ? formValues.company : undefined,
 		};
 
 		if (confirmedAddress === formValues.company.address) {
