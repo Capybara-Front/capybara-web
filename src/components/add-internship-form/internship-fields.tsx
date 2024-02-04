@@ -62,10 +62,10 @@ export function InternshipFields() {
 					<InputGroup>
 						<InputLeftElement
 							pointerEvents="none"
-							color="yellow.500"
+							color="blue.500"
 							fontSize="1.2em"
 						>
-							$
+							€
 						</InputLeftElement>
 						<Input
 							id="salary"

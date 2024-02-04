@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const formSchema = z.object({
 	title: z.string().min(2).max(128),
-	missionDescription: z.string().min(2).max(128),
+	missionDescription: z.string().min(2).max(1500),
 	dates: z
 		.object({
 			startDate: z.coerce.date().min(new Date('1800-01-01')),
