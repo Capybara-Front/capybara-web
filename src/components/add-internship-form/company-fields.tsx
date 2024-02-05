@@ -224,6 +224,7 @@ export function CompanyFields() {
 					variant="outline"
 					onClick={() => {
 						resetField('companyId');
+						resetField('companyTutor');
 						setOpenCreateForm(true);
 					}}
 				>

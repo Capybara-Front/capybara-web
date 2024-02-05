@@ -126,6 +126,7 @@ export function AddInternShipForm() {
 				gap={12}
 				as="form"
 				onSubmit={handleSubmit(onSubmit)}
+				pb={6}
 			>
 				<Grid templateColumns="repeat(2,1fr)" columnGap={12} rowGap={4}>
 					<GridItem colSpan={2}>
