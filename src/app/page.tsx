@@ -1,12 +1,24 @@
+'use client'
 import { getInternships } from '@/api/internship/get-internships';
 import InternshipsTable from '@/components/internships-table';
 import { Heading, Button, Container, Flex } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-export default async function Home() {
-	const currentUser = 'Your Name';
+export default function Home() {
+	const [internships, setInternships] = useState([]);
 
-	const internships = await getInternships();
+	useEffect(() => {
+		const fetchInternshipsData = async () => {
+			try{
+				const data = await getInternships();
+				setInternships(data);
+			}
+			catch (error){
+				console.error('Error fetching my internships',error);
+			}
+		}
+	fetchInternshipsData();},[]);
 
 	return (
 		<main>
