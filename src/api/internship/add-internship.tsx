@@ -7,7 +7,7 @@ export async function addInternship(requestModel: IAddInternsipRequestModel) {
 			body: JSON.stringify(requestModel),
 		});
 	} catch (err) {
-		Promise.reject(new Error('Unable to add an internship.'));
+		return Promise.reject(new Error('Unable to add an internship.'));
 	}
 }
 

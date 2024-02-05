@@ -1,16 +1,27 @@
 'use client';
 import { addInternship } from '@/api/internship/add-internship';
 import { AddressUtil, Suggestion } from '@/utils/address';
-import { Box, Button, Flex, Grid, GridItem, useToast } from '@chakra-ui/react';
+import {
+	Box,
+	Button,
+	Flex,
+	Grid,
+	GridItem,
+	HStack,
+	Icon,
+	Stack,
+	Text,
+	useToast,
+} from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { MdErrorOutline } from 'react-icons/md';
 import { z } from 'zod';
 import { AcademicTutorField } from './academic-tutor-field';
 import { CompanyFields } from './company-fields';
-import { CompanyTutorField } from './company-tutor-field';
 import { formSchema } from './form-schema';
 import { InternshipFields } from './internship-fields';
 import { VerifyAddress } from './verify-address';
@@ -168,6 +179,23 @@ export function AddInternShipForm() {
 							}}
 						/>
 					)}
+
+					{mutation.isError ? (
+						<Stack
+							gap={4}
+							fontSize="sm"
+							background="red.100"
+							borderRadius="md"
+							p={4}
+						>
+							<HStack color="red.500">
+								<Icon as={MdErrorOutline} boxSize={6} />
+								<Text fontSize="lg" fontWeight="500">
+									Unable to add the internship. Please retry.
+								</Text>
+							</HStack>
+						</Stack>
+					) : null}
 
 					<Button
 						type="submit"
