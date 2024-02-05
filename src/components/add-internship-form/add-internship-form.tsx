@@ -23,7 +23,6 @@ export function AddInternShipForm() {
 		resolver: zodResolver(formSchema),
 	});
 	const { handleSubmit, setValue: formSetValue } = form;
-	const watchCompanyId = form.watch('companyId');
 
 	const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 	const [showVerifyAddress, setShowVerifyAddress] = useState(false);
@@ -135,7 +134,6 @@ export function AddInternShipForm() {
 
 					<GridItem display="grid" gap={4} alignSelf="start">
 						<CompanyFields />
-						{<CompanyTutorField isDisabled={Boolean(!watchCompanyId)} />}
 					</GridItem>
 
 					<GridItem>

@@ -22,6 +22,7 @@ export function AcademicTutorField() {
 		formState: { errors },
 		control,
 		setValue: setFormValue,
+		resetField,
 	} = useFormContext<z.infer<typeof formSchema>>();
 
 	const [openCreateForm, setOpenCreateForm] = useState(false);
@@ -54,7 +55,10 @@ export function AcademicTutorField() {
 					variant="link"
 					size="sm"
 					justifyContent="end"
-					onClick={() => setOpenCreateForm(false)}
+					onClick={() => {
+						resetField('academicTutor');
+						setOpenCreateForm(false);
+					}}
 				>
 					Select an academic tutor
 				</Button>

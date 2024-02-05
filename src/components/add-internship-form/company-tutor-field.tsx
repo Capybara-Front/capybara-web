@@ -24,15 +24,11 @@ export function CompanyTutorField(props: FormControlProps) {
 		formState: { errors },
 		control,
 		setValue: setFormValue,
+		resetField,
 	} = useFormContext<z.infer<typeof formSchema>>();
 
 	const handleSearch = useDebouncedCallback(
 		(_, callback: (options: CompanyTutorOption[]) => void) => {
-			// Don't call api when isDisabled === true
-			if (props.isDisabled) {
-				callback([]);
-				return;
-			}
 			getCompanyTutors()
 				.then((res: any) => {
 					callback(
@@ -58,7 +54,10 @@ export function CompanyTutorField(props: FormControlProps) {
 					variant="link"
 					size="sm"
 					justifyContent="end"
-					onClick={() => setOpenCreateForm(false)}
+					onClick={() => {
+						resetField('companyTutor');
+						setOpenCreateForm(false);
+					}}
 				>
 					Select a company tutor
 				</Button>

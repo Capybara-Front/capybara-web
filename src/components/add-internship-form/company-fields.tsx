@@ -21,6 +21,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { z } from 'zod';
 import { Autocomplete } from '../ui/autocomplete';
 import { Combobox } from '../ui/combobox';
+import { CompanyTutorField } from './company-tutor-field';
 import { CreateCompanyTutorFields } from './create-company-tutor-fields';
 import { formSchema } from './form-schema';
 
@@ -39,7 +40,9 @@ export function CompanyFields() {
 		control,
 		setValue: setFormValue,
 		resetField,
+		watch,
 	} = useFormContext<z.infer<typeof formSchema>>();
+	const watchCompanyId = watch('companyId');
 
 	const handleCompaniesSearch = useDebouncedCallback(
 		(
@@ -112,10 +115,7 @@ export function CompanyFields() {
 					justifyContent="end"
 					onClick={() => {
 						setOpenCreateForm(false);
-						resetField('company.name');
-						resetField('company.address');
-						resetField('company.city');
-						resetField('company.zipCode');
+						resetField('company');
 					}}
 				>
 					Select a company
@@ -197,37 +197,41 @@ export function CompanyFields() {
 			</Grid>
 		</Box>
 	) : (
-		<HStack align="end">
-			<FormControl isInvalid={Boolean(errors.companyId)} isRequired>
-				<FormLabel htmlFor="companyId">Company</FormLabel>
-				<Controller
-					name="companyId"
-					control={control}
-					render={({ field }) => {
-						return (
-							<Combobox
-								{...field}
-								cacheOptions={false}
-								inputId="companyId"
-								placeholder="Search..."
-								loadOptions={handleCompaniesSearch}
-							/>
-						);
+		<Grid gap={4}>
+			<HStack align="end">
+				<FormControl isInvalid={Boolean(errors.companyId)} isRequired>
+					<FormLabel htmlFor="companyId">Company</FormLabel>
+					<Controller
+						name="companyId"
+						control={control}
+						render={({ field }) => {
+							return (
+								<Combobox
+									{...field}
+									cacheOptions={false}
+									inputId="companyId"
+									placeholder="Search..."
+									loadOptions={handleCompaniesSearch}
+								/>
+							);
+						}}
+					/>
+					<FormErrorMessage>
+						{errors.companyId && errors.companyId.message}
+					</FormErrorMessage>
+				</FormControl>
+				<Button
+					variant="outline"
+					onClick={() => {
+						resetField('companyId');
+						setOpenCreateForm(true);
 					}}
-				/>
-				<FormErrorMessage>
-					{errors.companyId && errors.companyId.message}
-				</FormErrorMessage>
-			</FormControl>
-			<Button
-				variant="outline"
-				onClick={() => {
-					resetField('companyId');
-					setOpenCreateForm(true);
-				}}
-			>
-				New
-			</Button>
-		</HStack>
+				>
+					New
+				</Button>
+			</HStack>
+
+			{<CompanyTutorField isDisabled={Boolean(!watchCompanyId)} />}
+		</Grid>
 	);
 }

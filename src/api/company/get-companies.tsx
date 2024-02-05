@@ -1,20 +1,14 @@
 import { isApiResponse } from '../api-response-type-guard';
 import { ApiResponseDto } from '../api-response.dto';
+import { fetcher } from '../fetcher';
 import type { ICompanyDto } from './company.dto';
 
 type Response = Promise<ApiResponseDto<ICompanyDto[]>>;
 
 export async function getCompanies() {
 	try {
-		// return await fetcher<Response>('/companies');
-		return [
-			{
-				name: 'Dassault Systèmes',
-				address: 'string',
-				city: 'string',
-				zipCode: 'string',
-			},
-		];
+		const res = await fetcher<Response>('/companies');
+		return res.content;
 	} catch (err) {
 		if (isApiResponse<ICompanyDto[]>(err)) {
 			console.error(err.error);
