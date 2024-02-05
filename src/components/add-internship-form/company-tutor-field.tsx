@@ -2,11 +2,13 @@ import { getCompanyTutors } from '@/api/company/get-company-tutors';
 import {
 	Box,
 	Button,
+	Flex,
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
 	HStack,
 	Text,
+	type FormControlProps,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -17,7 +19,7 @@ import { Combobox } from '../ui/combobox';
 import { CreateCompanyTutorFields } from './create-company-tutor-fields';
 import { formSchema } from './form-schema';
 
-export function CompanyTutorField() {
+export function CompanyTutorField(props: FormControlProps) {
 	const {
 		formState: { errors },
 		control,
@@ -26,6 +28,11 @@ export function CompanyTutorField() {
 
 	const handleSearch = useDebouncedCallback(
 		(_, callback: (options: CompanyTutorOption[]) => void) => {
+			// Don't call api when isDisabled === true
+			if (props.isDisabled) {
+				callback([]);
+				return;
+			}
 			getCompanyTutors()
 				.then((res: any) => {
 					callback(
@@ -60,8 +67,20 @@ export function CompanyTutorField() {
 		</Box>
 	) : (
 		<HStack align="end">
-			<FormControl isInvalid={Boolean(errors.companyTutorId)} isRequired>
-				<FormLabel htmlFor="companyTutorId">Company tutor</FormLabel>
+			<FormControl
+				isInvalid={Boolean(errors.companyTutorId)}
+				isRequired
+				{...props}
+			>
+				<Flex alignItems="start">
+					<FormLabel htmlFor="companyTutorId">Company tutor</FormLabel>
+					{props.isDisabled && (
+						<Text fontSize="sm" color="red.400" mt={0.5} cursor="default">
+							Please select a company first
+						</Text>
+					)}
+				</Flex>
+
 				<Controller
 					name="companyTutorId"
 					control={control}
@@ -87,6 +106,7 @@ export function CompanyTutorField() {
 					setFormValue('companyTutorId', { label: '', value: '' });
 					setOpenCreateForm(true);
 				}}
+				isDisabled={props.isDisabled}
 			>
 				New
 			</Button>

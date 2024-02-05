@@ -135,7 +135,7 @@ export function AddInternShipForm() {
 
 					<GridItem display="grid" gap={4} alignSelf="start">
 						<CompanyFields />
-						{watchCompanyId && <CompanyTutorField />}
+						{<CompanyTutorField isDisabled={Boolean(!watchCompanyId)} />}
 					</GridItem>
 
 					<GridItem>
