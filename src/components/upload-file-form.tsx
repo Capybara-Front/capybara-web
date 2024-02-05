@@ -11,33 +11,39 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Button,
-  Input,
-  Box,
-  IconButton,
 } from '@chakra-ui/react';
+import { uploadDocument } from '@/api/internship/upload-documents';
 
-const FileUpload = ({ isOpen, onClose, onUpload }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const getUploadParams = ({}) => {
-    return { url: "https://httpbin.org/post" };
-  };
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const handleUpload = () => {
-    if (selectedFile) {
-      onUpload(selectedFile);
-      onClose();
-    }
-  };
+const FileUpload = ({ internshipID, isOpen, onClose, onUpload }) => {
 
   const uppy = useUppy(() => {
-    return new Uppy();
+    const uppyInstance = new Uppy();
+
+    uppyInstance.on('file-added',(file) => {
+      console.log('File added :', file);
+    })
+
+    uppyInstance.on('complete',async(result) => {
+
+      try{
+        const files = uppy.getFiles();
+
+        if(files.length > 0){
+          uploadDocument(internshipID,files);
+          const uploadedFiles = result.successful.map((file) => file.data);
+          onUpload(uploadedFiles);
+          onClose();
+        }
+        else{
+          console.error('Upload failed ',result.failed);
+        }
+      }
+      catch (error){
+        console.error('Error during upload ',error);
+      }
   });
+  return uppyInstance;
+},[]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl" aria-labelledby="contained-modal-title-vcenter"

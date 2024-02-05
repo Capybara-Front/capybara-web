@@ -17,9 +17,8 @@ const InternshipsTable = ({ data }: { data: InternshipsTableProps[] }) => {
 		setUploadPopupOpen(false);
 	};
 
-	const handleUpload = (file) => {
-		// Implement logic to handle the file upload
-		console.log('Uploading file:', file);
+	const handleUpload = (uploadedFiles) => {
+		console.log('Uploaded files:', uploadedFiles);
 	};
 
 	return (
@@ -64,6 +63,7 @@ const InternshipsTable = ({ data }: { data: InternshipsTableProps[] }) => {
 								></IconButton>
 
 								<FileUpload
+								    internshipID={internship.id}
 									isOpen={isUploadPopupOpen}
 									onClose={closeUploadPopup}
 									onUpload={handleUpload}

@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-	const currentUser = 'Your Name';
 	const [internships, setInternships] = useState([]);
 
 	useEffect(() => {
