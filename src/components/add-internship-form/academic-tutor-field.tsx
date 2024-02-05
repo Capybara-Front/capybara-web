@@ -27,8 +27,11 @@ export function AcademicTutorField() {
 	const [openCreateForm, setOpenCreateForm] = useState(false);
 
 	const handleSearch = useDebouncedCallback(
-		(_, callback: (options: { value: string; label: string }[]) => void) => {
-			getAcademicTutors()
+		(
+			value: string,
+			callback: (options: { value: string; label: string }[]) => void
+		) => {
+			getAcademicTutors(value)
 				.then((res) => {
 					callback(
 						res.map((r) => ({

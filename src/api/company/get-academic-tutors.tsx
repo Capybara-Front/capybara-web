@@ -5,9 +5,13 @@ import { ITutorDto } from './company-tutor.dto';
 
 type ApiResponse = Promise<ApiResponseDto<ITutorDto[]>>;
 
-export async function getAcademicTutors() {
+export async function getAcademicTutors(q?: string) {
 	try {
-		const res = await fetcher<ApiResponse>('/academic-tutors');
+		let url = '/academic-tutors';
+		if (q) {
+			url += `?q=${q}`;
+		}
+		const res = await fetcher<ApiResponse>(url);
 		return res.content;
 	} catch (err) {
 		if (isApiResponse<ITutorDto[]>(err)) {
