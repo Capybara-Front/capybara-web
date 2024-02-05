@@ -18,15 +18,15 @@ const InternshipsTable = ({ data }: { data: InternshipsTableProps[] }) => {
 	};
 
 	return (
-		<Table size="lg">
+		<Table>
 			<Thead>
 				<Tr>
-					<Th style={{ textAlign: 'center' }}>Internship ID</Th>
+					<Th style={{ textAlign: 'center' }}>Title</Th>
 					<Th style={{ textAlign: 'center' }}>Starting Date</Th>
 					<Th style={{ textAlign: 'center' }}>End Date</Th>
 					<Th style={{ textAlign: 'center' }}>Duration</Th>
-					<Th style={{ textAlign: 'center' }}>Title</Th>
 					<Th style={{ textAlign: 'center' }}>Status</Th>
+					<Th style={{ textAlign: 'center' }}>Salary</Th>
 					<Th style={{ textAlign: 'center' }}>Documents</Th>
 				</Tr>
 			</Thead>
@@ -34,7 +34,7 @@ const InternshipsTable = ({ data }: { data: InternshipsTableProps[] }) => {
 				{data && data.length > 0 ? (
 					data.map((internship) => (
 						<Tr key={internship.id}>
-							<Td style={{ textAlign: 'center' }}>{internship.id}</Td>
+							<Td style={{ textAlign: 'center' }}>{internship.title}</Td>
 							<Td style={{ textAlign: 'center' }}>
 								{DateUtil.formatUSDate(internship.startDate)}
 							</Td>
@@ -48,8 +48,9 @@ const InternshipsTable = ({ data }: { data: InternshipsTableProps[] }) => {
 								)}{' '}
 								Days
 							</Td>
-							<Td style={{ textAlign: 'center' }}>{internship.title}</Td>
+
 							<Td style={{ textAlign: 'center' }}>{internship.status}</Td>
+							<Td style={{ textAlign: 'center' }}>{internship.salary}</Td>
 							<Td style={{ textAlign: 'center' }}>
 								<IconButton
 									aria-label="expand row"

@@ -1,28 +1,32 @@
-'use client'
-import { getInternships } from '@/api/internship/get-internships';
+'use client';
+import {
+	getInternships,
+	type InternshipsTableProps,
+} from '@/api/internship/get-internships';
 import InternshipsTable from '@/components/internships-table';
-import { Heading, Button, Container, Flex } from '@chakra-ui/react';
+import { Button, Container, Flex, Heading } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-	const [internships, setInternships] = useState([]);
+	const [internships, setInternships] = useState<InternshipsTableProps[]>([]);
 
 	useEffect(() => {
 		const fetchInternshipsData = async () => {
-			try{
+			try {
 				const data = await getInternships();
 				setInternships(data);
+				console.log(data);
+			} catch (error) {
+				console.error('Error fetching my internships', error);
 			}
-			catch (error){
-				console.error('Error fetching my internships',error);
-			}
-		}
-	fetchInternshipsData();},[]);
+		};
+		fetchInternshipsData();
+	}, []);
 
 	return (
 		<main>
-			<Container maxWidth="5xl" pt={16}>
+			<Container maxWidth="7xl" pt={16}>
 				<Flex justifyContent={'space-between'}>
 					<Heading size="xl" mb={10}>
 						My Internships
